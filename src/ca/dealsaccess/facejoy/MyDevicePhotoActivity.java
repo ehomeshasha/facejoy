@@ -214,9 +214,51 @@ public class MyDevicePhotoActivity extends FragmentActivity implements LoaderCal
         }
     }
     
+    /*class MyPhotoAdapter extends SimpleCursorAdapter {
+
+		public MyPhotoAdapter(Context context, int layout, Cursor c,
+				String[] from, int[] to, int flags) {
+			super(context, layout, c, from, to, flags);
+			
+		}
+
+		
+		@Override
+	    public void bindView(View view, Context context, Cursor cursor) {
+	        final ViewBinder binder = getViewBinder();
+	        final int count = mTo.length;
+	        final int[] from = mFrom;
+	        final int[] to = mTo;
+
+	        for (int i = 0; i < count; i++) {
+	            final View v = view.findViewById(to[i]);
+	            if (v != null) {
+	                boolean bound = false;
+	                if (binder != null) {
+	                    bound = binder.setViewValue(v, cursor, from[i]);
+	                }
+
+	                if (!bound) {
+	                    String text = cursor.getString(from[i]);
+	                    if (text == null) {
+	                        text = "";
+	                    }
+
+	                    if (v instanceof TextView) {
+	                        setViewText((TextView) v, text);
+	                    } else if (v instanceof ImageView) {
+	                        setViewImage((ImageView) v, text);
+	                    } else {
+	                        throw new IllegalStateException(v.getClass().getName() + " is not a " +
+	                                " view that can be bounds by this SimpleCursorAdapter");
+	                    }
+	                }
+	            }
+	        }
+	    }
+    }*/
     
-    
-  //自定义适配器 
+  /*//自定义适配器 
     class MyAdapter extends ResourceCursorAdapter{ 
         public MyAdapter(Context context, int layout, Cursor c) {
 		super(context, layout, c);
@@ -226,12 +268,12 @@ public class MyDevicePhotoActivity extends FragmentActivity implements LoaderCal
         private Context context; 
         //图片数组 
         private Integer[] imgs = { 
-               /* R.drawable.pic0, R.drawable.pic1, R.drawable.pic2,  
+                R.drawable.pic0, R.drawable.pic1, R.drawable.pic2,  
                 R.drawable.pic3, R.drawable.pic4, R.drawable.pic5,                
                 R.drawable.pic6, R.drawable.pic7, R.drawable.pic8,  
                 R.drawable.pic0, R.drawable.pic1, R.drawable.pic2,  
                 R.drawable.pic3, R.drawable.pic4, R.drawable.pic5,                
-                R.drawable.pic6, R.drawable.pic7, R.drawable.pic8, */
+                R.drawable.pic6, R.drawable.pic7, R.drawable.pic8, 
         }; 
         //MyAdapter(Context context){ 
          //   this.context = context; 
@@ -270,5 +312,5 @@ public class MyDevicePhotoActivity extends FragmentActivity implements LoaderCal
 			// TODO Auto-generated method stub
 			
 		} 
-    }
+    }*/
 }
