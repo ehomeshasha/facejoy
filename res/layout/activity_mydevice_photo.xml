@@ -1,0 +1,11 @@
+<GridView xmlns:android="http://schemas.android.com/apk/res/android"   
+    android:id="@+id/photo_gridview"  
+    android:layout_width="fill_parent"   
+    android:layout_height="fill_parent"  
+    android:numColumns="auto_fit"  
+    android:verticalSpacing="0dp"  
+    android:horizontalSpacing="0dp"  
+    android:columnWidth="120dp"
+    android:stretchMode="columnWidth"  
+    android:gravity="center"
+    />  

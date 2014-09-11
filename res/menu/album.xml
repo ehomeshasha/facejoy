@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.facejoy.AlbumActivity" >
+
+    <item
+        android:id="@+id/image_shooting"
+        android:orderInCategory="100"
+        android:title="@string/image_shooting"
+        app:showAsAction="never"/>
+
+</menu>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">FaceJoy</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="settings">设置</string>
+    <string name="album_gallery">面相馆</string>
+    <string name="search">搜索</string>
+    <string name="title_activity_display_message">TODO</string>
+    <string name="image_shooting">拍照</string>
+    <string name="title_activity_mydevice_photo">图片</string>
+    <string name="title_activity_album">TODO</string>
+
+</resources>
