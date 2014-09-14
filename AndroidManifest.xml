@@ -46,11 +46,22 @@
 	        android:name="ca.dealsaccess.facejoy.MyDevicePhotoActivity"
 	        android:label="@string/title_activity_mydevice_photo"
 	        android:parentActivityName="ca.dealsaccess.facejoy.FaceMainActivity" >
-	        <!-- Parent activity meta-data to support 4.0 and lower -->
 	        <meta-data
 	            android:name="android.support.PARENT_ACTIVITY"
 	            android:value="ca.dealsaccess.facejoy.FaceMainActivity" />
 		</activity>
+		
+		
+		<!-- GridPhotoActivity -->
+		<activity
+	        android:name="ca.dealsaccess.facejoy.GridPhotoActivity"
+	        android:label="@string/title_activity_mydevice_photo"
+	        android:parentActivityName="ca.dealsaccess.facejoy.FaceMainActivity" >
+	        <meta-data
+	            android:name="android.support.PARENT_ACTIVITY"
+	            android:value="ca.dealsaccess.facejoy.FaceMainActivity" />
+		</activity>
+		
 		
         <activity
 	        android:name="ca.dealsaccess.facejoy.AlbumActivity"
@@ -60,6 +71,17 @@
 	        <meta-data
 	            android:name="android.support.PARENT_ACTIVITY"
 	            android:value="ca.dealsaccess.facejoy.FaceMainActivity" />
+		</activity>
+		
+        
+        <activity
+	        android:name="ca.dealsaccess.facejoy.DisplayPhotoActivity"
+	        android:label="@string/photo"
+	        android:parentActivityName="ca.dealsaccess.facejoy.MyDevicePhotoActivity" >
+	        <!-- Parent activity meta-data to support 4.0 and lower -->
+	        <meta-data
+	            android:name="android.support.PARENT_ACTIVITY"
+	            android:value="ca.dealsaccess.facejoy.MyDevicePhotoActivity" />
 		</activity>
         
     </application>

@@ -1,5 +1,7 @@
 package ca.dealsaccess.facejoy;
 
+import ca.dealsaccess.facejoy.common.AppConstants;
+
 import com.example.facejoy.R;
 
 import android.support.v7.app.ActionBarActivity;
@@ -30,7 +32,7 @@ public class AlbumActivity extends ActionBarActivity {
 		
 		
 		Intent intent = getIntent();
-	    String title = intent.getStringExtra(FaceMainActivity.EXTRA_MESSAGE);
+	    String title = intent.getStringExtra(AppConstants.EXTRA_MESSAGE);
 	    Toast.makeText(this, "Selected Item: " + title, Toast.LENGTH_SHORT).show();
 	}
 

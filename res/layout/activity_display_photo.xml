@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+     <!-- android:scaleType="centerCrop" -->
+		<ImageView
+			android:id="@+id/photo_imageView"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			
+			android:layout_alignParentLeft="true"
+	        android:layout_alignParentRight="true"
+	        android:layout_alignParentTop="true"
+			 />
+		<Button
+	        android:id="@+id/button_detect"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentBottom="true"
+	        android:layout_marginRight="10dp"
+	        android:text="Detect" />
+	
+    
+
+	<TextView
+		android:id="@+id/photo_textView"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentLeft="true"
+		android:gravity="center_vertical|center_horizontal"
+		android:text="state"
+		android:textAppearance="?android:attr/textAppearanceMedium" />
+    
+	
+		<!-- android:scaleType="fitStart" -->
+        <!-- android:layout_toLeftOf="@+id/button1" -->	
+	
+	
+    
+
+</RelativeLayout>

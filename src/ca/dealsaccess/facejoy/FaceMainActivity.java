@@ -7,6 +7,8 @@ import java.io.ByteArrayOutputStream;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import ca.dealsaccess.facejoy.common.AppConstants;
+
 import com.example.facejoy.R;
 import com.facepp.error.FaceppParseException;
 import com.facepp.http.HttpRequests;
@@ -42,11 +44,8 @@ import android.provider.MediaStore.Images.ImageColumns;
 
 public class FaceMainActivity extends ActionBarActivity {
 
-	static final String EXTRA_MESSAGE = "EXTRA_MESSAGE";
-
 	private static final String TAG = "FaceMainActivity";
 
-	private static final CharSequence EMPTY = "";
 	final private int PICTURE_CHOOSE = 1;
 	
 	//private ImageView imageView = null;
@@ -61,97 +60,7 @@ public class FaceMainActivity extends ActionBarActivity {
 		setContentView(R.layout.face_main_activity);
 		
 
-		
-		
-		/*
-		textView = (TextView)this.findViewById(R.id.textView);
-		imageView = (ImageView)this.findViewById(R.id.imageView);
-        imageView.setImageBitmap(img);
-        detectButton = (Button)this.findViewById(R.id.detectButton);
-        detectButton.setVisibility(View.INVISIBLE);
-        detectButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View arg0) {
-				
-				textView.setText("Waiting ...");
-				
-				FaceppDetect faceppDetect = new FaceppDetect();
-				faceppDetect.setDetectCallback(new DetectCallback() {
-					
-					public void detectResult(JSONObject rst) {
-						//Log.v(TAG, rst.toString());
-						
-						//use the red paint
-						Paint paint = new Paint();
-						paint.setColor(Color.RED);
-						paint.setStrokeWidth(Math.max(img.getWidth(), img.getHeight()) / 100f);
-
-						//create a new canvas
-						Bitmap bitmap = Bitmap.createBitmap(img.getWidth(), img.getHeight(), img.getConfig());
-						Canvas canvas = new Canvas(bitmap);
-						canvas.drawBitmap(img, new Matrix(), null);
-						
-						
-						try {
-							//find out all faces
-							final int count = rst.getJSONArray("face").length();
-							for (int i = 0; i < count; ++i) {
-								float x, y, w, h;
-								//get the center point
-								x = (float)rst.getJSONArray("face").getJSONObject(i)
-										.getJSONObject("position").getJSONObject("center").getDouble("x");
-								y = (float)rst.getJSONArray("face").getJSONObject(i)
-										.getJSONObject("position").getJSONObject("center").getDouble("y");
-
-								//get face size
-								w = (float)rst.getJSONArray("face").getJSONObject(i)
-										.getJSONObject("position").getDouble("width");
-								h = (float)rst.getJSONArray("face").getJSONObject(i)
-										.getJSONObject("position").getDouble("height");
-								
-								//change percent value to the real size
-								x = x / 100 * img.getWidth();
-								w = w / 100 * img.getWidth() * 0.7f;
-								y = y / 100 * img.getHeight();
-								h = h / 100 * img.getHeight() * 0.7f;
-
-								//draw the box to mark it out
-								canvas.drawLine(x - w, y - h, x - w, y + h, paint);
-								canvas.drawLine(x - w, y - h, x + w, y - h, paint);
-								canvas.drawLine(x + w, y + h, x - w, y + h, paint);
-								canvas.drawLine(x + w, y + h, x + w, y - h, paint);
-							}
-							
-							//save new image
-							img = bitmap;
-
-							FaceMainActivity.this.runOnUiThread(new Runnable() {
-								
-								public void run() {
-									//show the image
-									imageView.setImageBitmap(img);
-									textView.setText("Finished, "+ count + " faces.");
-								}
-							});
-							
-						} catch (JSONException e) {
-							e.printStackTrace();
-							FaceMainActivity.this.runOnUiThread(new Runnable() {
-								public void run() {
-									textView.setText("Error.");
-								}
-							});
-						}
-						
-					}
-				});
-				faceppDetect.detect(img);
-			}
-		});
-        */
-        
-        
-        
-        
+	
         //if (savedInstanceState == null) {
 		//	getSupportFragmentManager().beginTransaction()
 		//			.add(R.id.container, new PlaceholderFragment()).commit();
@@ -214,116 +123,25 @@ public class FaceMainActivity extends ActionBarActivity {
 		//Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         //photoPickerIntent.setType("image/*");
         //startActivityForResult(photoPickerIntent, PICTURE_CHOOSE);
-		Intent intent = new Intent(this, AlbumActivity.class);
-		intent.putExtra(EXTRA_MESSAGE, "openAlbumActivity");
+		Intent intent = new Intent(this, GridPhotoActivity.class);
+		intent.putExtra(AppConstants.EXTRA_MESSAGE, "openAlbumActivity");
 		startActivity(intent);
 	}
 	
 	public void openSearch() {
 		//open search page
 		Intent intent = new Intent(this, MyDevicePhotoActivity.class);
-		intent.putExtra(EXTRA_MESSAGE, "openSearchActivity");
+		intent.putExtra(AppConstants.EXTRA_MESSAGE, "openSearchActivity");
 		startActivity(intent);
 	}
 	
 	public void openSettings() {
 		//open setting page
 		Intent intent = new Intent(this, DisplayMessageActivity.class);
-		intent.putExtra(EXTRA_MESSAGE, "openSettingsActivity");
+		intent.putExtra(AppConstants.EXTRA_MESSAGE, "openSettingsActivity");
 		startActivity(intent);
 	}
 	
 	
 
-	
-	
-	/*@Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-    	super.onActivityResult(requestCode, resultCode, intent);
-    	
-    	//the image picker callback
-    	if (requestCode == PICTURE_CHOOSE) {
-    		if (intent != null) {
-    			//The Android api ~~~ 
-    			//Log.d(TAG, "idButSelPic Photopicker: " + intent.getDataString());
-    			Cursor cursor = getContentResolver().query(intent.getData(), null, null, null, null);
-    			cursor.moveToFirst();
-    			int idx = cursor.getColumnIndex(ImageColumns.DATA);
-    			String fileSrc = cursor.getString(idx); 
-    			//Log.d(TAG, "Picture:" + fileSrc);
-    			
-    			//just read size
-    			Options options = new Options();
-    			options.inJustDecodeBounds = true;
-    			img = BitmapFactory.decodeFile(fileSrc, options);
-
-    			//scale size to read
-    			options.inSampleSize = Math.max(1, (int)Math.ceil(Math.max((double)options.outWidth / 1024f, (double)options.outHeight / 1024f)));
-    			options.inJustDecodeBounds = false;
-    			img = BitmapFactory.decodeFile(fileSrc, options);
-    			//textView.setText(EMPTY);
-    			
-    			
-    			imageView.setImageBitmap(img);
-    			detectButton.setVisibility(View.VISIBLE);
-    		}
-    		else {
-    			Log.d(TAG, "idButSelPic Photopicker canceled");
-    		}
-    	}
-    }
-	
-	
-	
-	private class FaceppDetect {
-    	DetectCallback callback = null;
-    	
-    	public void setDetectCallback(DetectCallback detectCallback) { 
-    		callback = detectCallback;
-    	}
-
-    	public void detect(final Bitmap image) {
-    		
-    		new Thread(new Runnable() {
-				
-				public void run() {
-					HttpRequests httpRequests = new HttpRequests("4480afa9b8b364e30ba03819f3e9eff5", "Pz9VFT8AP3g_Pz8_dz84cRY_bz8_Pz8M", true, false);
-		    		//Log.v(TAG, "image size : " + img.getWidth() + " " + img.getHeight());
-		    		
-		    		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		    		float scale = Math.min(1, Math.min(600f / img.getWidth(), 600f / img.getHeight()));
-		    		Matrix matrix = new Matrix();
-		    		matrix.postScale(scale, scale);
-
-		    		Bitmap imgSmall = Bitmap.createBitmap(img, 0, 0, img.getWidth(), img.getHeight(), matrix, false);
-		    		//Log.v(TAG, "imgSmall size : " + imgSmall.getWidth() + " " + imgSmall.getHeight());
-		    		
-		    		imgSmall.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-		    		byte[] array = stream.toByteArray();
-		    		
-		    		try {
-		    			//detect
-						JSONObject result = httpRequests.detectionDetect(new PostParameters().setImg(array));
-						//finished , then call the callback function
-						if (callback != null) {
-							callback.detectResult(result);
-						}
-					} catch (FaceppParseException e) {
-						e.printStackTrace();
-						FaceMainActivity.this.runOnUiThread(new Runnable() {
-							public void run() {
-								textView.setText("Network error.");
-							}
-						});
-					}
-					
-				}
-			}).start();
-    	}
-    }
-	
-	interface DetectCallback {
-    	void detectResult(JSONObject rst);
-	}*/
-	
 }
