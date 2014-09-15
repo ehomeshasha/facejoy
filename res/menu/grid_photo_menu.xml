@@ -1,0 +1,9 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:facejoy="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.facejoy.GridPhotoActivity" >
+
+    <item android:id="@+id/open_camera"
+          android:icon="@drawable/ic_action_photo"
+          facejoy:showAsAction="ifRoom" />
+</menu>

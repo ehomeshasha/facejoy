@@ -1,5 +1,6 @@
 package ca.dealsaccess.facejoy;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import com.example.facejoy.R;
@@ -8,10 +9,15 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.MediaStore.MediaColumns;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -30,7 +36,9 @@ public class GridPhotoActivity extends ActionBarActivity {
 	
 	private ImageAdapter imageAdapter;
 	
+	final private int TAKE_PICTURE = 1;
 	
+	Uri outputFileUri = null;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,6 +88,64 @@ public class GridPhotoActivity extends ActionBarActivity {
 		}
 	}
 	
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    // Inflate the menu items for use in the action bar
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.grid_photo_menu, menu);
+	    return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		
+	    // Handle presses on the action bar items
+		switch (item.getItemId()) {
+			case R.id.open_camera:
+				openCamera();
+				return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
+		//Toast.makeText(this, "Selected Item: " + item.getTitle(), Toast.LENGTH_SHORT).show();  
+        //return true; 
+	}
+	
+	
+	
+	private void openCamera() {
+		//Intent intent = new Intent(this, CameraActivity.class);
+		//intent.putExtra(AppConstants.EXTRA_MESSAGE, "openCameraActivity");
+		//startActivity(intent);
+		File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "test_"+System.currentTimeMillis()+".jpg");
+		outputFileUri = Uri.fromFile(file);
+		
+		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		intent.putExtra(AppConstants.EXTRA_MESSAGE, "openCameraActivity");
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+		startActivityForResult(intent, TAKE_PICTURE);
+	}
+	
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(requestCode == TAKE_PICTURE) {
+/*			//检查结果是否包含缩略图
+			if(data != null) {
+				if(data.hasExtra("data")) {
+					Bitmap thumbnail = data.getParcelableExtra("data");
+					imageView.setImageBitmap()
+				}
+			}*/
+			Intent intent = new Intent(this, DisplayPhotoActivity.class);
+        	intent.putExtra(AppConstants.EXTRA_MESSAGE, "openDisplayPhotoActivity");
+        	intent.putExtra(AppConstants.CLICK_PATH, outputFileUri.getPath());
+    		startActivity(intent);
+		}
+	}
+	
+
 	@Override
 	public void onDestroy() {  
 		

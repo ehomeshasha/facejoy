@@ -12,7 +12,7 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     
-    
+    <uses-permission android:name="android.permission.CAMERA" />
     
     <application
         android:allowBackup="true"
@@ -82,6 +82,17 @@
 	        <meta-data
 	            android:name="android.support.PARENT_ACTIVITY"
 	            android:value="ca.dealsaccess.facejoy.MyDevicePhotoActivity" />
+		</activity>
+		
+        
+        <activity
+	        android:name="ca.dealsaccess.facejoy.CameraActivity"
+	        android:label="@string/photo"
+	        android:parentActivityName="ca.dealsaccess.facejoy.GridPhotoActivity" >
+	        <!-- Parent activity meta-data to support 4.0 and lower -->
+	        <meta-data
+	            android:name="android.support.PARENT_ACTIVITY"
+	            android:value="ca.dealsaccess.facejoy.GridPhotoActivity" />
 		</activity>
         
     </application>

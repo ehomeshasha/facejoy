@@ -62,9 +62,8 @@ public class DisplayPhotoActivity extends ActionBarActivity {
 	    
 	    Intent intent = getIntent();
 	    String title = intent.getStringExtra(AppConstants.EXTRA_MESSAGE);
-	    long id = intent.getLongExtra(AppConstants.CLICK_ID, -1);
 	    String path = intent.getStringExtra(AppConstants.CLICK_PATH);
-	    Toast.makeText(this, "Selected Item: " + title+ ", id="+id+", path="+path, Toast.LENGTH_SHORT).show();
+	    Toast.makeText(this, "Selected Item: " + title+ ", path="+path, Toast.LENGTH_SHORT).show();
 	    
 	    
 /*	    Cursor cursor = getContentResolver().query(intent.getData(), null, null, null, null);
@@ -119,15 +118,16 @@ public class DisplayPhotoActivity extends ActionBarActivity {
 	  	//display.getSize(size);
 	  	//int width = size.x;
 	  	//int height = size.y;
-	  	//int width = display.getWidth();
-	  	//int height = display.getHeight();
+	  	int width = display.getWidth();
+	  	int height = display.getHeight();
 	  	//System.out.println("width="+width);
 	  	//System.out.println("height="+height);
 	  	//System.out.println("image_width="+options.outWidth);
 	  	//System.out.println("image_height="+options.outHeight);
 	  	//System.out.println("inSampleSize="+(int)Math.ceil(Math.max((double)options.outWidth / width, (double)options.outHeight / width)));
   		//scale size to read
-  		options.inSampleSize = Math.max(1, (int)Math.ceil(Math.max((double)options.outWidth / 1024f, (double)options.outHeight / 1024f)));
+  		//options.inSampleSize = Math.max(1, (int)Math.ceil(Math.max((double)options.outWidth / 1024f, (double)options.outHeight / 1024f)));
+	  	options.inSampleSize = Math.max(1, (int)Math.ceil(Math.max((double)options.outWidth / width, (double)options.outHeight / height)));
   		options.inJustDecodeBounds = false;
   		img = BitmapFactory.decodeFile(path, options);
 
