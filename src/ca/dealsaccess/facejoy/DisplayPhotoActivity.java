@@ -1,6 +1,8 @@
 package ca.dealsaccess.facejoy;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,6 +16,9 @@ import com.facepp.error.FaceppParseException;
 import com.facepp.http.HttpRequests;
 import com.facepp.http.PostParameters;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -32,6 +37,7 @@ import android.provider.MediaStore.Images.ImageColumns;
 import android.provider.MediaStore.Images.Thumbnails;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -49,6 +55,10 @@ public class DisplayPhotoActivity extends ActionBarActivity {
 	private Button buttonDetect = null;
 	
 	private Bitmap img = null;
+	
+	private View detectResultView = null; 
+	
+	//private AlertDialog.Builder builder = null;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -138,7 +148,7 @@ public class DisplayPhotoActivity extends ActionBarActivity {
 	    
 	    
 	    
-	    textView = (TextView)this.findViewById(R.id.photo_textView);
+	    
 	    
 	    buttonDetect = (Button)this.findViewById(R.id.button_detect);
 	    /*buttonDetect.setVisibility(View.INVISIBLE);
@@ -164,12 +174,23 @@ public class DisplayPhotoActivity extends ActionBarActivity {
 	    buttonDetect.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				
-				textView.setText("Waiting ...");
+				
+				
+				
+				//textView.setText("Waiting ...");
 				
 				FaceppDetect faceppDetect = new FaceppDetect();
 				faceppDetect.setDetectCallback(new DetectCallback() {
 					
+					StringBuilder sb = new StringBuilder();
+					List<String> faceList = new ArrayList<String>();
+					
 					public void detectResult(JSONObject rst) {
+						
+						
+						//System.out.println("result="+rst.toString());
+						
+						
 						//Log.v(TAG, rst.toString());
 						
 						//use the red paint
@@ -183,9 +204,13 @@ public class DisplayPhotoActivity extends ActionBarActivity {
 						canvas.drawBitmap(img, new Matrix(), null);
 						
 						
+						
+						
 						try {
 							//find out all faces
 							final int count = rst.getJSONArray("face").length();
+							//sb.append("Finished, "+ count + " faces.\n");
+							
 							for (int i = 0; i < count; ++i) {
 								float x, y, w, h;
 								//get the center point
@@ -211,6 +236,24 @@ public class DisplayPhotoActivity extends ActionBarActivity {
 								canvas.drawLine(x - w, y - h, x + w, y - h, paint);
 								canvas.drawLine(x + w, y + h, x - w, y + h, paint);
 								canvas.drawLine(x + w, y + h, x + w, y - h, paint);
+								JSONObject attribute = rst.getJSONArray("face").getJSONObject(i).getJSONObject("attribute");
+								//int age = attribute.getJSONObject("age").getInt("value");
+								//int minAge = age - attribute.getJSONObject("age").getInt("range");
+								//int maxAge = age + attribute.getJSONObject("age").getInt("range");
+								
+								//sb.append("FaceID: ").append(rst.getJSONArray("face").getJSONObject(i).getString("face_id"))
+								//sb.setLength(0);
+								sb.append("face"+i).append("\n")
+									.append("race: ").append(attribute.getJSONObject("race").getString("value"))
+									.append(", confidence: ").append(attribute.getJSONObject("race").getDouble("confidence")).append("\n")
+									.append("gender: ").append(attribute.getJSONObject("gender").getString("value"))
+									.append(", confidence: ").append(attribute.getJSONObject("gender").getDouble("confidence")).append("\n")
+									.append("smiling: ").append(attribute.getJSONObject("smiling").getDouble("value")).append("\n")
+									.append("age: ").append(attribute.getJSONObject("age").getInt("value"))
+									.append(", range: ").append(attribute.getJSONObject("age").getInt("range")).append("\n\n");
+									
+								faceList.add("face"+i);
+								
 							}
 							
 							//save new image
@@ -221,9 +264,42 @@ public class DisplayPhotoActivity extends ActionBarActivity {
 								public void run() {
 									//show the image
 									imageView.setImageBitmap(img);
-									textView.setText("Finished, "+ count + " faces.");
+									textView.setText(sb.toString());
 								}
 							});
+							
+							
+							
+							DisplayPhotoActivity.this.runOnUiThread(new Runnable() {
+								public void run() {
+									
+									Dialog dialog;
+									AlertDialog.Builder builder = new AlertDialog.Builder(DisplayPhotoActivity.this);
+									builder.setTitle("Finished, "+ count + " faces.\n")
+										.setView(detectResultView)
+										.setMultiChoiceItems(faceList.toArray(new String[0]), null, null)
+										.setPositiveButton("创建人物", new DialogInterface.OnClickListener() {
+											public void onClick(DialogInterface dialog, int which) {
+												dialog.dismiss();
+											}
+										})
+										.setNegativeButton("添加到已有人物", new DialogInterface.OnClickListener() {
+											public void onClick(DialogInterface dialog, int which) {
+												dialog.dismiss();
+											}
+										})
+										.setOnCancelListener(new DialogInterface.OnCancelListener() {
+											public void onCancel(DialogInterface dialog) {
+												dialog.dismiss();
+											}
+										});
+									dialog = builder.create();
+									dialog.show();
+								}
+							});
+							
+							
+							
 							
 						} catch (JSONException e) {
 							e.printStackTrace();
@@ -234,8 +310,22 @@ public class DisplayPhotoActivity extends ActionBarActivity {
 							});
 						}
 						
+						
+						
+
+						
+						
+						
 					}
 				});
+				
+				
+
+				
+				detectResultView = LayoutInflater.from(DisplayPhotoActivity.this).inflate(R.layout.detect_result_dialog, null);
+				textView = (TextView) detectResultView.findViewById(R.id.detect_result_text);
+				
+				
 				faceppDetect.detect(img);
 			}
 		});
@@ -312,7 +402,7 @@ public class DisplayPhotoActivity extends ActionBarActivity {
 						e.printStackTrace();
 						DisplayPhotoActivity.this.runOnUiThread(new Runnable() {
 							public void run() {
-								textView.setText("Network error.");
+								//textView.setText("Network error.");
 							}
 						});
 					}
