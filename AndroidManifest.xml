@@ -86,6 +86,28 @@
 		
         
         <activity
+	        android:name="ca.dealsaccess.facejoy.AddPersonActivity"
+	        android:label="创建人物"
+	        android:parentActivityName="ca.dealsaccess.facejoy.DisplayPhotoActivity" >
+	        <!-- Parent activity meta-data to support 4.0 and lower -->
+	        <meta-data
+	            android:name="android.support.PARENT_ACTIVITY"
+	            android:value="ca.dealsaccess.facejoy.DisplayPhotoActivity" />
+		</activity>
+		
+        
+        <activity
+	        android:name="ca.dealsaccess.facejoy.UseExistPersonActivity"
+	        android:label="使用已有人物"
+	        android:parentActivityName="ca.dealsaccess.facejoy.DisplayPhotoActivity" >
+	        <!-- Parent activity meta-data to support 4.0 and lower -->
+	        <meta-data
+	            android:name="android.support.PARENT_ACTIVITY"
+	            android:value="ca.dealsaccess.facejoy.DisplayPhotoActivity" />
+		</activity>
+        
+        
+        <activity
 	        android:name="ca.dealsaccess.facejoy.CameraActivity"
 	        android:label="@string/photo"
 	        android:parentActivityName="ca.dealsaccess.facejoy.GridPhotoActivity" >

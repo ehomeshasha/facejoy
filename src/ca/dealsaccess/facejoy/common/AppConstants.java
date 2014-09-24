@@ -7,5 +7,7 @@ public class AppConstants {
 	public static final String CLICK_ID = "CLICK_ID";
 	
 	public static final String CLICK_PATH = "CLICK_PATH";
+
+	public static final String FACE_CHECKED_LIST = "FACE_CHECKED_LIST";
 	
 }

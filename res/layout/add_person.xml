@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:stretchColumns="*"
+    android:paddingTop="10dp" >
+
+    <TableRow
+        android:id="@+id/add_person_tablerow1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/username_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:text="人物昵称" />
+
+        <EditText
+            android:id="@+id/username_input"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="请输入昵称" />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/add_person_tablerow2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/faceid_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:text="Faceid" />
+
+        <EditText
+            android:id="@+id/faceid_input"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="none" />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/add_person_tablerow3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+             />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right" >
+
+            <Button
+                android:id="@+id/add_person_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="创建人物" 
+                />
+
+            <!-- <Button
+                android:id="@+id/add_person_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="取消" /> -->
+        </LinearLayout>
+    </TableRow>
+
+</TableLayout>

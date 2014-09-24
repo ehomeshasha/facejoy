@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import ca.dealsaccess.facejoy.common.AppConstants;
 import ca.dealsaccess.facejoy.image.ImageManager;
 import ca.dealsaccess.util.ImageUtils;
+import ca.dealsaccess.util.StringUtils;
 
 import com.example.facejoy.R;
 import com.facepp.error.FaceppParseException;
@@ -184,6 +185,8 @@ public class DisplayPhotoActivity extends ActionBarActivity {
 					
 					StringBuilder sb = new StringBuilder();
 					List<String> faceList = new ArrayList<String>();
+					List<String> faceIdList = new ArrayList<String>();
+					List<String> facecheckedList = new ArrayList<String>();
 					
 					public void detectResult(JSONObject rst) {
 						
@@ -243,6 +246,7 @@ public class DisplayPhotoActivity extends ActionBarActivity {
 								
 								//sb.append("FaceID: ").append(rst.getJSONArray("face").getJSONObject(i).getString("face_id"))
 								//sb.setLength(0);
+								faceIdList.add(rst.getJSONArray("face").getJSONObject(i).getString("face_id"));
 								sb.append("face"+i).append("\n")
 									.append("race: ").append(attribute.getJSONObject("race").getString("value"))
 									.append(", confidence: ").append(attribute.getJSONObject("race").getDouble("confidence")).append("\n")
@@ -277,15 +281,33 @@ public class DisplayPhotoActivity extends ActionBarActivity {
 									AlertDialog.Builder builder = new AlertDialog.Builder(DisplayPhotoActivity.this);
 									builder.setTitle("Finished, "+ count + " faces.\n")
 										.setView(detectResultView)
-										.setMultiChoiceItems(faceList.toArray(new String[0]), null, null)
+										.setMultiChoiceItems(faceList.toArray(new String[0]), null, new DialogInterface.OnMultiChoiceClickListener() {
+										     public void onClick(DialogInterface dialog, int whichButton,boolean isChecked) {
+										    	 if(isChecked) {
+										    		 facecheckedList.add(faceIdList.get(whichButton));
+										    	 } else {
+										    		 facecheckedList.remove(faceIdList.get(whichButton));
+										    	 }
+										     }
+										})
 										.setPositiveButton("创建人物", new DialogInterface.OnClickListener() {
 											public void onClick(DialogInterface dialog, int which) {
 												dialog.dismiss();
+												String checkedListStr = StringUtils.listToString(facecheckedList);
+												Intent intent = new Intent(DisplayPhotoActivity.this, AddPersonActivity.class);
+												intent.putExtra(AppConstants.EXTRA_MESSAGE, "openAddPersonActivity");
+												intent.putExtra(AppConstants.FACE_CHECKED_LIST, checkedListStr);
+												startActivity(intent);
 											}
 										})
 										.setNegativeButton("添加到已有人物", new DialogInterface.OnClickListener() {
 											public void onClick(DialogInterface dialog, int which) {
 												dialog.dismiss();
+												String checkedListStr = StringUtils.listToString(facecheckedList);
+												Intent intent = new Intent(DisplayPhotoActivity.this, UseExistPersonActivity.class);
+												intent.putExtra(AppConstants.EXTRA_MESSAGE, "openUseExistPersonActivity");
+												intent.putExtra(AppConstants.FACE_CHECKED_LIST, checkedListStr);
+												startActivity(intent);
 											}
 										})
 										.setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -377,7 +399,7 @@ public class DisplayPhotoActivity extends ActionBarActivity {
     		new Thread(new Runnable() {
 				
 				public void run() {
-					HttpRequests httpRequests = new HttpRequests("4480afa9b8b364e30ba03819f3e9eff5", "Pz9VFT8AP3g_Pz8_dz84cRY_bz8_Pz8M", true, false);
+					HttpRequests httpRequests = new HttpRequests("3807aeb4a0b911495fdf0c946d006251", "DQOkhWeHweMMItMjaIGwqG0Nns8JNj1E", true, false);
 		    		//Log.v(TAG, "image size : " + img.getWidth() + " " + img.getHeight());
 		    		
 		    		ByteArrayOutputStream stream = new ByteArrayOutputStream();
