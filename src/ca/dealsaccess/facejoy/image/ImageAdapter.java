@@ -25,10 +25,18 @@ public class ImageAdapter extends BaseAdapter {
 	private int size;
 	private ImageShowManager imageManager;
 	private LayoutInflater li;
+	private int width;
+	private int height;
 
 	public ImageAdapter(Activity a, ArrayList<String> paths) {
+		this(a, paths, 100, 100);
+	}
+	
+	public ImageAdapter(Activity a, ArrayList<String> paths, int width, int height) {
 		this.uiActivity = a;
 		this.paths = paths;
+		this.width = width;
+		this.height = height;
 		size = paths.size();
 		imageManager = ImageShowManager.from(uiActivity);
 		li = LayoutInflater.from(uiActivity);
@@ -56,9 +64,9 @@ public class ImageAdapter extends BaseAdapter {
 		if (convertView != null) {
 			surfaceHolder = (SurfaceHolder) convertView.getTag();
 		} else {
-			convertView = li.inflate(R.layout.photo_layout, null);
+			convertView = li.inflate(R.layout.face_image, null);
 			surfaceHolder.iv = (ImageView) convertView
-					.findViewById(R.id.photo_body);
+					.findViewById(R.id.image_body);
 		}
 		convertView.setTag(surfaceHolder);
 
@@ -123,27 +131,27 @@ public class ImageAdapter extends BaseAdapter {
 			Bitmap bitmap = null;
 			this.url = params[0];
 
-			// 从内存缓存区域读取
-			bitmap = imageManager.getBitmapFromMemory(url);
-			if (bitmap != null) {
-				Log.d("dqq", "return by 内存");
-				return bitmap;
-			}
-			// 从硬盘缓存区域中读取
-			bitmap = imageManager.getBitmapFormDisk(url);
-			if (bitmap != null) {
-				imageManager.putBitmapToMemery(url, bitmap);
-				Log.d("dqq", "return by 硬盘");
-				return bitmap;
-			}
+//			// 从内存缓存区域读取
+//			bitmap = imageManager.getBitmapFromMemory(url);
+//			if (bitmap != null) {
+//				//Log.d("dqq", "return by 内存");
+//				return bitmap;
+//			}
+//			// 从硬盘缓存区域中读取
+//			bitmap = imageManager.getBitmapFormDisk(url);
+//			if (bitmap != null) {
+//				imageManager.putBitmapToMemery(url, bitmap);
+//				//Log.d("dqq", "return by 硬盘");
+//				return bitmap;
+//			}
 			
 			// 没有缓存则从原始位置读取
 			bitmap = BitmapUtilities.getBitmapThumbnail(url,
-					ImageShowManager.bitmap_width,
-					ImageShowManager.bitmap_height);
+					width,
+					height);
 			imageManager.putBitmapToMemery(url, bitmap);
 			imageManager.putBitmapToDisk(url, bitmap);
-			Log.d("dqq", "return by 原始读取");
+			//Log.d("dqq", "return by 原始读取");
 			return bitmap;
 		}
 

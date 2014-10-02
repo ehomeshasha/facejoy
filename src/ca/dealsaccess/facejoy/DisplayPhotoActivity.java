@@ -294,10 +294,10 @@ public class DisplayPhotoActivity extends ActionBarActivity {
 											public void onClick(DialogInterface dialog, int which) {
 												dialog.dismiss();
 												String checkedListStr = StringUtils.listToString(facecheckedList);
-												Intent intent = new Intent(DisplayPhotoActivity.this, AddPersonActivity.class);
+												Intent intent = new Intent(DisplayPhotoActivity.this, CreatePersonActivity.class);
 												intent.putExtra(AppConstants.EXTRA_MESSAGE, "openAddPersonActivity");
 												intent.putExtra(AppConstants.FACE_CHECKED_LIST, checkedListStr);
-												startActivity(intent);
+												startActivityForResult(intent, RESULT_OK);
 											}
 										})
 										.setNegativeButton("添加到已有人物", new DialogInterface.OnClickListener() {
@@ -307,7 +307,7 @@ public class DisplayPhotoActivity extends ActionBarActivity {
 												Intent intent = new Intent(DisplayPhotoActivity.this, UseExistPersonActivity.class);
 												intent.putExtra(AppConstants.EXTRA_MESSAGE, "openUseExistPersonActivity");
 												intent.putExtra(AppConstants.FACE_CHECKED_LIST, checkedListStr);
-												startActivity(intent);
+												startActivityForResult(intent, RESULT_OK);
 											}
 										})
 										.setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -357,7 +357,17 @@ public class DisplayPhotoActivity extends ActionBarActivity {
 	
 	
 	
-	
+	@Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+       // TODO Auto-generated method stub
+       switch (resultCode) {
+       case RESULT_OK:
+           
+           break;
+       default:
+           break;
+       }
+    }
 	
 	
 	

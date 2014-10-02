@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="horizontal" 
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+
+
+	
+
+
+	<TextView android:id="@+id/person_name" 
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" 
+		android:textSize="22px" />
+
+
+
+	<!-- <Button android:id="@+id/add_button"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/tianjia"
+		android:layout_gravity="bottom|right" />
+	
+	<ImageView android:id="@+id/face_thumb" 
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" 
+		android:layout_margin="5px"/> -->
+	
+</LinearLayout>

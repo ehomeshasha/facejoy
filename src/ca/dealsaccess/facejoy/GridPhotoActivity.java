@@ -7,8 +7,6 @@ import com.example.facejoy.R;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -21,14 +19,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.RelativeLayout;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageView;
 import ca.dealsaccess.facejoy.common.AppConstants;
 import ca.dealsaccess.facejoy.image.ImageAdapter;
 
 public class GridPhotoActivity extends ActionBarActivity {
 
+	private static final String TAG = "GridPhotoActivity";
 	
 	private ArrayList<String> mList;
 	
@@ -43,15 +40,22 @@ public class GridPhotoActivity extends ActionBarActivity {
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mydevice_photo);
+        setContentView(R.layout.face_grid);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         
         
-        
-        
-        initData();
+        if (savedInstanceState == null) {
+        	initData();
+        } else {
+        	 Bundle map = savedInstanceState.getBundle(TAG);
+             if (map != null) {
+                 mList = map.getStringArrayList("mList");
+             } else {
+            	 initData();
+             }
+        }
 		
-		gridView = (GridView) findViewById(R.id.photo_gridview);
+		gridView = (GridView) findViewById(R.id.face_gridview);
 		imageAdapter = new ImageAdapter(this,mList);
 		gridView.setAdapter(imageAdapter);
 		
@@ -69,6 +73,22 @@ public class GridPhotoActivity extends ActionBarActivity {
 		
 	}
 
+	
+	@Override
+    public void onSaveInstanceState(Bundle outState) {
+        //Store the game state
+        outState.putBundle(TAG, saveState());
+    }
+
+
+	 public Bundle saveState() {
+        Bundle map = new Bundle();
+        if(mList != null && mList.size() != 0) {
+        	map.putStringArrayList("mList", mList);
+        }
+        return map;
+    }
+	
 	/**
 	 * 初始化数据
 	 */

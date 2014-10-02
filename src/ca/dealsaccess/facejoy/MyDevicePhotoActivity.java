@@ -96,11 +96,11 @@ public class MyDevicePhotoActivity extends ActionBarActivity implements LoaderCa
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mydevice_photo);
+        setContentView(R.layout.face_grid);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         
         //listView = (ListView)findViewById(R.id.ListView01);
-        gridView = (GridView)findViewById(R.id.photo_gridview);
+        gridView = (GridView)findViewById(R.id.face_gridview);
         //textView = (TextView)this.findViewById(R.id.photo_textView);
         //imageView = (ImageView)this.findViewById(R.id.photo_imageView);
         //textView.setVisibility(View.INVISIBLE);
@@ -258,10 +258,10 @@ public class MyDevicePhotoActivity extends ActionBarActivity implements LoaderCa
         simpleCursorAdapter = new SimpleCursorAdapter(
                 this, 
                 //R.layout.activity_gridview,
-                R.layout.photo_layout,
+                R.layout.face_image,
                 null, 
                 STORE_IMAGES, 
-                new int[] { R.id.photo_body}, 
+                new int[] { R.id.image_body}, 
                 0
                 );
         

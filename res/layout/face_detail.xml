@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <LinearLayout android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+	    <ImageView 
+	        android:id="@+id/face_detail_image"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:scaleType="centerCrop"
+	        
+	        />
+	    <LinearLayout android:orientation="vertical"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_margin="10dp"
+	        >
+	    <TextView 
+	        android:id="@+id/face_detail_title1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textSize="25sp"
+			android:text="人脸属性"
+			/>
+	    <TextView
+	        android:id="@+id/gender_text" 
+	  		android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textSize="20sp"
+			/>
+	    <TextView
+	        android:id="@+id/age_text" 
+	  		android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textSize="20sp"
+			/>
+	    <TextView
+	        android:id="@+id/race_text" 
+	  		android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textSize="20sp"
+			/>
+	    <TextView
+	        android:id="@+id/smiling_text" 
+	  		android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textSize="20sp"
+			/>
+	    </LinearLayout>
+    </LinearLayout>
+</ScrollView>

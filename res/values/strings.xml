@@ -3,13 +3,17 @@
 
     <string name="app_name">FaceJoy</string>
     <string name="hello_world">Hello world!</string>
-    <string name="settings">设置</string>
-    <string name="album_gallery">自画像</string>
+    <string name="shezhi">设置</string>
+    <string name="xiangce">相册</string>
+    <string name="paizhao">拍照</string>
     <string name="search">搜索</string>
     <string name="title_activity_display_message">TODO</string>
-    <string name="image_shooting">拍照</string>
+    <string name="image_shooting">TODO</string>
+    <string name="settings">TODO</string>
     <string name="title_activity_mydevice_photo">图片</string>
     <string name="title_activity_album">TODO</string>
     <string name="photo">照片</string>
+    <string name="tianjia">添加</string>
+    <string name="renwu">人物</string>
 
 </resources>

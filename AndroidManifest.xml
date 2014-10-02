@@ -14,6 +14,16 @@
     
     <uses-permission android:name="android.permission.CAMERA" />
     
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    
+    
+    <supports-screens
+            android:smallScreens="true"
+            android:normalScreens="true"
+            android:largeScreens="true"
+            android:resizeable="true"
+            android:anyDensity="true" />
+    
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -21,7 +31,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="ca.dealsaccess.facejoy.FaceMainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"  >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,7 +45,8 @@
 		<activity
 	        android:name="ca.dealsaccess.facejoy.DisplayMessageActivity"
 	        android:label="@string/title_activity_display_message"
-	        android:parentActivityName="ca.dealsaccess.facejoy.FaceMainActivity" >
+	        android:parentActivityName="ca.dealsaccess.facejoy.FaceMainActivity"
+	        android:screenOrientation="portrait" >
 	        <!-- Parent activity meta-data to support 4.0 and lower -->
 	        <meta-data
 	            android:name="android.support.PARENT_ACTIVITY"
@@ -45,7 +57,8 @@
         <activity
 	        android:name="ca.dealsaccess.facejoy.MyDevicePhotoActivity"
 	        android:label="@string/title_activity_mydevice_photo"
-	        android:parentActivityName="ca.dealsaccess.facejoy.FaceMainActivity" >
+	        android:parentActivityName="ca.dealsaccess.facejoy.FaceMainActivity"
+	        android:screenOrientation="portrait" >
 	        <meta-data
 	            android:name="android.support.PARENT_ACTIVITY"
 	            android:value="ca.dealsaccess.facejoy.FaceMainActivity" />
@@ -56,7 +69,8 @@
 		<activity
 	        android:name="ca.dealsaccess.facejoy.GridPhotoActivity"
 	        android:label="@string/title_activity_mydevice_photo"
-	        android:parentActivityName="ca.dealsaccess.facejoy.FaceMainActivity" >
+	        android:parentActivityName="ca.dealsaccess.facejoy.FaceMainActivity"
+	        android:screenOrientation="portrait" >
 	        <meta-data
 	            android:name="android.support.PARENT_ACTIVITY"
 	            android:value="ca.dealsaccess.facejoy.FaceMainActivity" />
@@ -66,7 +80,8 @@
         <activity
 	        android:name="ca.dealsaccess.facejoy.AlbumActivity"
 	        android:label="@string/title_activity_album"
-	        android:parentActivityName="ca.dealsaccess.facejoy.FaceMainActivity" >
+	        android:parentActivityName="ca.dealsaccess.facejoy.FaceMainActivity"
+	        android:screenOrientation="portrait" >
 	        <!-- Parent activity meta-data to support 4.0 and lower -->
 	        <meta-data
 	            android:name="android.support.PARENT_ACTIVITY"
@@ -77,7 +92,8 @@
         <activity
 	        android:name="ca.dealsaccess.facejoy.DisplayPhotoActivity"
 	        android:label="@string/photo"
-	        android:parentActivityName="ca.dealsaccess.facejoy.MyDevicePhotoActivity" >
+	        android:parentActivityName="ca.dealsaccess.facejoy.MyDevicePhotoActivity"
+	        android:screenOrientation="portrait" >
 	        <!-- Parent activity meta-data to support 4.0 and lower -->
 	        <meta-data
 	            android:name="android.support.PARENT_ACTIVITY"
@@ -86,31 +102,65 @@
 		
         
         <activity
-	        android:name="ca.dealsaccess.facejoy.AddPersonActivity"
+	        android:name="ca.dealsaccess.facejoy.CreatePersonActivity"
 	        android:label="创建人物"
-	        android:parentActivityName="ca.dealsaccess.facejoy.DisplayPhotoActivity" >
+	        android:parentActivityName="ca.dealsaccess.facejoy.FaceMainActivity"
+	        android:screenOrientation="portrait" >
 	        <!-- Parent activity meta-data to support 4.0 and lower -->
 	        <meta-data
 	            android:name="android.support.PARENT_ACTIVITY"
-	            android:value="ca.dealsaccess.facejoy.DisplayPhotoActivity" />
+	            android:value="ca.dealsaccess.facejoy.FaceMainActivity" />
 		</activity>
 		
         
         <activity
 	        android:name="ca.dealsaccess.facejoy.UseExistPersonActivity"
 	        android:label="使用已有人物"
-	        android:parentActivityName="ca.dealsaccess.facejoy.DisplayPhotoActivity" >
+	        android:parentActivityName="ca.dealsaccess.facejoy.DisplayPhotoActivity"
+	        android:screenOrientation="portrait" >
 	        <!-- Parent activity meta-data to support 4.0 and lower -->
 	        <meta-data
 	            android:name="android.support.PARENT_ACTIVITY"
 	            android:value="ca.dealsaccess.facejoy.DisplayPhotoActivity" />
 		</activity>
         
+        <activity
+	        android:name="ca.dealsaccess.facejoy.PersonListActivity"
+	        android:label="人物列表"
+	        android:parentActivityName="ca.dealsaccess.facejoy.FaceMainActivity"
+	        android:screenOrientation="portrait" >
+	        <!-- Parent activity meta-data to support 4.0 and lower -->
+	        <meta-data
+	            android:name="android.support.PARENT_ACTIVITY"
+	            android:value="ca.dealsaccess.facejoy.FaceMainActivity" />
+		</activity>
+        
+        
+        <activity
+	        android:name="ca.dealsaccess.facejoy.PersonDetailActivity"
+	        android:parentActivityName="ca.dealsaccess.facejoy.PersonListActivity"
+	        android:screenOrientation="portrait" >
+	        <!-- Parent activity meta-data to support 4.0 and lower -->
+	        <meta-data
+	            android:name="android.support.PARENT_ACTIVITY"
+	            android:value="ca.dealsaccess.facejoy.PersonListActivity" />
+		</activity>
+		
+        <activity
+	        android:name="ca.dealsaccess.facejoy.FaceDetailActivity"
+	        android:parentActivityName="ca.dealsaccess.facejoy.PersonDetailActivity"
+	        android:screenOrientation="portrait" >
+	        <!-- Parent activity meta-data to support 4.0 and lower -->
+	        <meta-data
+	            android:name="android.support.PARENT_ACTIVITY"
+	            android:value="ca.dealsaccess.facejoy.PersonDetailActivity" />
+		</activity>
         
         <activity
 	        android:name="ca.dealsaccess.facejoy.CameraActivity"
 	        android:label="@string/photo"
-	        android:parentActivityName="ca.dealsaccess.facejoy.GridPhotoActivity" >
+	        android:parentActivityName="ca.dealsaccess.facejoy.GridPhotoActivity"
+	        android:screenOrientation="portrait" >
 	        <!-- Parent activity meta-data to support 4.0 and lower -->
 	        <meta-data
 	            android:name="android.support.PARENT_ACTIVITY"

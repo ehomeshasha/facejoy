@@ -7,7 +7,7 @@
     android:paddingTop="10dp" >
 
     <TableRow
-        android:id="@+id/add_person_tablerow1"
+        android:id="@+id/create_person_tablerow1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
@@ -26,7 +26,7 @@
     </TableRow>
 
     <TableRow
-        android:id="@+id/add_person_tablerow2"
+        android:id="@+id/create_person_tablerow2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
@@ -45,33 +45,20 @@
     </TableRow>
 
     <TableRow
-        android:id="@+id/add_person_tablerow3"
+        android:id="@+id/create_person_tablerow3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
+        <Button
+			android:id="@+id/create_person_btn"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="创建人物" 
+			/>
+        
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
              />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right" >
-
-            <Button
-                android:id="@+id/add_person_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="创建人物" 
-                />
-
-            <!-- <Button
-                android:id="@+id/add_person_cancel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="取消" /> -->
-        </LinearLayout>
     </TableRow>
-
 </TableLayout>
