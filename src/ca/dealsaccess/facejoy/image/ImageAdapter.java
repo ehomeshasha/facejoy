@@ -27,16 +27,18 @@ public class ImageAdapter extends BaseAdapter {
 	private LayoutInflater li;
 	private int width;
 	private int height;
+	private int layoutResource;
 
-	public ImageAdapter(Activity a, ArrayList<String> paths) {
-		this(a, paths, 100, 100);
+	public ImageAdapter(Activity a, ArrayList<String> paths, int layoutResource) {
+		this(a, paths, 100, 100, layoutResource);
 	}
 	
-	public ImageAdapter(Activity a, ArrayList<String> paths, int width, int height) {
+	public ImageAdapter(Activity a, ArrayList<String> paths, int layoutResource, int width, int height) {
 		this.uiActivity = a;
 		this.paths = paths;
 		this.width = width;
 		this.height = height;
+		this.layoutResource = layoutResource;
 		size = paths.size();
 		imageManager = ImageShowManager.from(uiActivity);
 		li = LayoutInflater.from(uiActivity);
@@ -64,7 +66,7 @@ public class ImageAdapter extends BaseAdapter {
 		if (convertView != null) {
 			surfaceHolder = (SurfaceHolder) convertView.getTag();
 		} else {
-			convertView = li.inflate(R.layout.face_image, null);
+			convertView = li.inflate(layoutResource, null);
 			surfaceHolder.iv = (ImageView) convertView
 					.findViewById(R.id.image_body);
 		}

@@ -9,31 +9,15 @@ android:horizontalSpacing="10dp"，两列之间的边距
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-    <GridView    
- 		android:id="@+id/grid"
-        android:background="#FFFFFF"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:columnWidth="@dimen/itemSize"
-        android:gravity="center"
-        android:horizontalSpacing="4dp"
-        android:verticalSpacing="4dp"
-        android:numColumns="auto_fit"
-        android:scrollbars="vertical"
-        android:scrollbarStyle="insideOverlay"
-        android:stretchMode="columnWidth"
-		/>
-
-
-<GridView    
-    android:id="@+id/face_gridview"  
-    android:layout_width="fill_parent"   
-    android:layout_height="fill_parent"  
-    android:numColumns="auto_fit"  
-    android:verticalSpacing="0dp"  
-    android:horizontalSpacing="0dp"  
-    android:columnWidth="90dp"
-    android:stretchMode="columnWidth"  
-    android:gravity="center"
-    />  
+	<GridView    
+	    android:id="@+id/face_gridview"  
+	    android:layout_width="fill_parent"   
+	    android:layout_height="fill_parent"  
+	    android:numColumns="auto_fit"  
+	    android:verticalSpacing="0dp"  
+	    android:horizontalSpacing="0dp"  
+	    android:columnWidth="90dp"
+	    android:stretchMode="columnWidth"  
+	    android:gravity="center"
+	    />  
 </RelativeLayout>

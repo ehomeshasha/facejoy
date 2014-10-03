@@ -85,16 +85,22 @@ public class CreatePersonActivity extends ActionBarActivity {
 							
 							});
 							
-						} catch (final FaceppParseException | JSONException e) {
+						} catch (final FaceppParseException e) {
 							CreatePersonActivity.this.runOnUiThread(new Runnable() {
 								@Override
 								public void run() {
 									Toast.makeText(CreatePersonActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
 								}
-							
 							});
 							
 							return;
+						} catch (final JSONException e) {
+							CreatePersonActivity.this.runOnUiThread(new Runnable() {
+								@Override
+								public void run() {
+									Toast.makeText(CreatePersonActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+								}
+							});
 						}
 						CreatePersonActivity.this.runOnUiThread(new Runnable() {
 							public void run() {

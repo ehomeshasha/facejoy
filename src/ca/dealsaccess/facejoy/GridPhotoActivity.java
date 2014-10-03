@@ -56,7 +56,7 @@ public class GridPhotoActivity extends ActionBarActivity {
         }
 		
 		gridView = (GridView) findViewById(R.id.face_gridview);
-		imageAdapter = new ImageAdapter(this,mList);
+		imageAdapter = new ImageAdapter(this,mList,R.layout.face_image);
 		gridView.setAdapter(imageAdapter);
 		
 		

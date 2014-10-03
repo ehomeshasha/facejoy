@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import ca.dealsaccess.facejoy.common.AppConstants;
+import ca.dealsaccess.util.DialogUtils;
 import ca.dealsaccess.util.StringUtils;
 
 import com.example.facejoy.R;
@@ -19,6 +20,7 @@ import com.facepp.http.PostParameters;
 import android.support.v7.app.ActionBarActivity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -63,14 +65,15 @@ public class FaceMainActivity extends ActionBarActivity {
 	private View detectResultView = null;
 	private int screenWidth;
 	private int screenHeight;
-	String fileSrc = null;
-	
+	private String fileSrc = null;
+	private ProgressDialog processDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.face_main_activity);
 
+		processDialog = new ProgressDialog(this);
 		imageView = (ImageView) this.findViewById(R.id.photo_imageView);
 		imageView.setVisibility(View.INVISIBLE);
 		detectButton = (Button) this.findViewById(R.id.button_detect);
@@ -79,25 +82,25 @@ public class FaceMainActivity extends ActionBarActivity {
 
 		// 获取屏幕大小
 		DisplayMetrics dm = new DisplayMetrics();
-		// 取得窗口属性
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
-		// 窗口的宽度
 		screenWidth = dm.widthPixels;
-		// 窗口高度
 		screenHeight = dm.heightPixels;
+		
 		// 设定dectectButton的点击事件
 		detectButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				DialogUtils.startLoadingAnimation(processDialog, "人脸检测中，请稍侯...");
 				FaceppDetect faceppDetect = new FaceppDetect();
 				// 设置人脸检测完成后的回调事件
 				faceppDetect.setDetectCallback(new DetectCallback() {
-
 					StringBuilder sb = new StringBuilder();
 					List<String> faceList = new ArrayList<String>();
 					List<String> faceIdList = new ArrayList<String>();
 					List<String> facecheckedList = new ArrayList<String>();
 
 					public void detectResult(JSONObject rst) {
+						DialogUtils.finishLoadingAnimation(processDialog);
+						
 						Paint paint = new Paint();
 						paint.setColor(Color.RED);
 						paint.setStrokeWidth(Math.max(img.getWidth(), img.getHeight()) / 100f);
@@ -273,16 +276,10 @@ public class FaceMainActivity extends ActionBarActivity {
 				faceppDetect.detect(img);
 			}
 		});
-
-		// if (savedInstanceState == null) {
-		// getSupportFragmentManager().beginTransaction()
-		// .add(R.id.container, new PlaceholderFragment()).commit();
-		// }
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu items for use in the action bar
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.face_main_menu, menu);
 		return super.onCreateOptionsMenu(menu);
@@ -290,8 +287,6 @@ public class FaceMainActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-
-		// Handle presses on the action bar items
 		switch (item.getItemId()) {
 		case R.id.album:
 			openAlbum();
@@ -308,12 +303,9 @@ public class FaceMainActivity extends ActionBarActivity {
 		default:
 			return super.onOptionsItemSelected(item);
 		}
-		// Toast.makeText(this, "Selected Item: " + item.getTitle(),
-		// Toast.LENGTH_SHORT).show();
-		// return true;
 	}
+	//打开人物列表
 	private void openPerson() {
-		// open setting page
 		Intent intent = new Intent(this, PersonListActivity.class);
 		intent.putExtra(AppConstants.EXTRA_MESSAGE, "openPersonListActivity");
 		startActivityForResult(intent, PERSON_LIST);
@@ -322,13 +314,13 @@ public class FaceMainActivity extends ActionBarActivity {
 
 	//打开摄像头
 	private void openCamera() {
-		// Intent intent = new Intent(this, CameraActivity.class);
-		// intent.putExtra(AppConstants.EXTRA_MESSAGE, "openCameraActivity");
-		// startActivity(intent);
-		// File file = new
-		// File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-		// "test_"+System.currentTimeMillis()+".jpg");
-		// outputFileUri = Uri.fromFile(file);
+//		 Intent intent = new Intent(this, CameraActivity.class);
+//		 intent.putExtra(AppConstants.EXTRA_MESSAGE, "openCameraActivity");
+//		 startActivity(intent);
+//		 File file = new
+//		 File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+//		 "test_"+System.currentTimeMillis()+".jpg");
+//		 outputFileUri = Uri.fromFile(file);
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		intent.putExtra(AppConstants.EXTRA_MESSAGE, "openCameraActivity");
 		// intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
@@ -447,12 +439,12 @@ public class FaceMainActivity extends ActionBarActivity {
 						if (callback != null) {
 							callback.detectResult(result);
 						}
-					} catch (FaceppParseException e) {
-						e.printStackTrace();
+					} catch (final FaceppParseException e) {
 						FaceMainActivity.this.runOnUiThread(new Runnable() {
 							public void run() {
-								Toast.makeText(FaceMainActivity.this, "Network error.", Toast.LENGTH_SHORT)
+								Toast.makeText(FaceMainActivity.this, e.getMessage(), Toast.LENGTH_SHORT)
 										.show();
+								DialogUtils.finishLoadingAnimation(processDialog);
 							}
 						});
 					}

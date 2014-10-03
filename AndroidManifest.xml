@@ -103,6 +103,7 @@
         
         <activity
 	        android:name="ca.dealsaccess.facejoy.CreatePersonActivity"
+	        android:launchMode="singleTop"
 	        android:label="创建人物"
 	        android:parentActivityName="ca.dealsaccess.facejoy.FaceMainActivity"
 	        android:screenOrientation="portrait" >
@@ -126,6 +127,7 @@
         
         <activity
 	        android:name="ca.dealsaccess.facejoy.PersonListActivity"
+	        android:launchMode="singleTop"
 	        android:label="人物列表"
 	        android:parentActivityName="ca.dealsaccess.facejoy.FaceMainActivity"
 	        android:screenOrientation="portrait" >
@@ -138,6 +140,7 @@
         
         <activity
 	        android:name="ca.dealsaccess.facejoy.FaceListActivity"
+	        android:launchMode="singleTop"
 	        android:parentActivityName="ca.dealsaccess.facejoy.PersonListActivity"
 	        android:screenOrientation="portrait" >
 	        <!-- Parent activity meta-data to support 4.0 and lower -->
@@ -148,6 +151,8 @@
 		
         <activity
 	        android:name="ca.dealsaccess.facejoy.FaceDetailActivity"
+	        android:launchMode="singleTop"
+	        android:label="脸谱详情"
 	        android:parentActivityName="ca.dealsaccess.facejoy.FaceListActivity"
 	        android:screenOrientation="portrait" >
 	        <!-- Parent activity meta-data to support 4.0 and lower -->
