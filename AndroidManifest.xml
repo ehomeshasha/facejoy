@@ -137,7 +137,7 @@
         
         
         <activity
-	        android:name="ca.dealsaccess.facejoy.PersonDetailActivity"
+	        android:name="ca.dealsaccess.facejoy.FaceListActivity"
 	        android:parentActivityName="ca.dealsaccess.facejoy.PersonListActivity"
 	        android:screenOrientation="portrait" >
 	        <!-- Parent activity meta-data to support 4.0 and lower -->
@@ -148,12 +148,12 @@
 		
         <activity
 	        android:name="ca.dealsaccess.facejoy.FaceDetailActivity"
-	        android:parentActivityName="ca.dealsaccess.facejoy.PersonDetailActivity"
+	        android:parentActivityName="ca.dealsaccess.facejoy.FaceListActivity"
 	        android:screenOrientation="portrait" >
 	        <!-- Parent activity meta-data to support 4.0 and lower -->
 	        <meta-data
 	            android:name="android.support.PARENT_ACTIVITY"
-	            android:value="ca.dealsaccess.facejoy.PersonDetailActivity" />
+	            android:value="ca.dealsaccess.facejoy.FaceListActivity" />
 		</activity>
         
         <activity

@@ -1,6 +1,5 @@
 package ca.dealsaccess.facejoy;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,26 +11,15 @@ import com.facepp.http.HttpRequests;
 import com.facepp.http.PostParameters;
 
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
-import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.os.Build;
-import android.provider.MediaStore.Images.ImageColumns;
 
 public class FaceDetailActivity extends ActionBarActivity {
 

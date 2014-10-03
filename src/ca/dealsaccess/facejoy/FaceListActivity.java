@@ -40,7 +40,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.os.Build;
 
-public class PersonDetailActivity extends ActionBarActivity {
+public class FaceListActivity extends ActionBarActivity {
 
 	private String personId;
 	private String personName;
@@ -91,33 +91,33 @@ public class PersonDetailActivity extends ActionBarActivity {
 						faceImgPathList.add(imgPath);
 					}
 				} catch (final FaceppParseException e) {
-					PersonDetailActivity.this.runOnUiThread(new Runnable() {
+					FaceListActivity.this.runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
-							Toast.makeText(PersonDetailActivity.this, e.getMessage(), Toast.LENGTH_SHORT)
+							Toast.makeText(FaceListActivity.this, e.getMessage(), Toast.LENGTH_SHORT)
 									.show();
 						}
 					});
 					return;
 				} catch (final JSONException e) {
-					PersonDetailActivity.this.runOnUiThread(new Runnable() {
+					FaceListActivity.this.runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
-							Toast.makeText(PersonDetailActivity.this, e.getMessage(), Toast.LENGTH_SHORT)
+							Toast.makeText(FaceListActivity.this, e.getMessage(), Toast.LENGTH_SHORT)
 									.show();
 						}
 					});
 					return;
 				}
-				PersonDetailActivity.this.runOnUiThread(new Runnable() {
+				FaceListActivity.this.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
 						gridView = (GridView) findViewById(R.id.face_gridview);
-						imageAdapter = new ImageAdapter(PersonDetailActivity.this, faceImgPathList, 200, 200);
+						imageAdapter = new ImageAdapter(FaceListActivity.this, faceImgPathList, 200, 200);
 						gridView.setAdapter(imageAdapter);
 						gridView.setOnItemClickListener(new OnItemClickListener() { 
 				            public void onItemClick(AdapterView<?> parent, View v, int position, long id) { 
-				            	Intent intent = new Intent(PersonDetailActivity.this, FaceDetailActivity.class);
+				            	Intent intent = new Intent(FaceListActivity.this, FaceDetailActivity.class);
 				            	intent.putExtra(AppConstants.EXTRA_MESSAGE, "openDisplayPhotoActivity");
 				            	intent.putExtra(AppConstants.FACE_ID, faceIdList.get(position))
 				            		.putExtra(AppConstants.FACE_IMG_PATH, faceImgPathList.get(position));

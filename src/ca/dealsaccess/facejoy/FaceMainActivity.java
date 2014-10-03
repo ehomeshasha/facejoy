@@ -202,7 +202,7 @@ public class FaceMainActivity extends ActionBarActivity {
 														Toast.makeText(FaceMainActivity.this, "请先选择人脸",	Toast.LENGTH_SHORT).show();
 													} else {
 														String checkedListStr = StringUtils
-																.listToString(facecheckedList);
+																.toStringList(facecheckedList);
 														Intent intent = new Intent(FaceMainActivity.this,
 																CreatePersonActivity.class);
 														intent.putExtra(AppConstants.EXTRA_MESSAGE,
@@ -227,7 +227,7 @@ public class FaceMainActivity extends ActionBarActivity {
 																Toast.makeText(FaceMainActivity.this, "请先选择人脸",	Toast.LENGTH_SHORT).show();
 															} else {
 																String checkedListStr = StringUtils
-																		.listToString(facecheckedList);
+																		.toStringList(facecheckedList);
 																Intent intent = new Intent(FaceMainActivity.this,
 																		PersonListActivity.class);
 																intent.putExtra(AppConstants.EXTRA_MESSAGE,
@@ -240,6 +240,11 @@ public class FaceMainActivity extends ActionBarActivity {
 													})
 											.setOnCancelListener(new DialogInterface.OnCancelListener() {
 												public void onCancel(DialogInterface dialog) {
+													try {
+														Field field = dialog.getClass().getSuperclass().getDeclaredField("mShowing");
+														field.setAccessible(true);
+														field.set(dialog, true);//允许对话框关闭
+													} catch (Exception e) {e.printStackTrace();}
 													dialog.dismiss();
 												}
 											});

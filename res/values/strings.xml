@@ -15,5 +15,6 @@
     <string name="photo">照片</string>
     <string name="tianjia">添加</string>
     <string name="renwu">人物</string>
-
+	<string name="delete">删除</string>
+	<string name="goback">返回</string>
 </resources>

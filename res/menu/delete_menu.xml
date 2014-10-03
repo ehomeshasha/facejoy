@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:facejoy="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <item android:id="@+id/goback"
+          android:title="@string/goback"
+          android:visible="false"
+          facejoy:showAsAction="ifRoom" />
+    
+    <item android:id="@+id/delete"
+          android:title="@string/delete"
+          facejoy:showAsAction="ifRoom" />
+
+</menu>

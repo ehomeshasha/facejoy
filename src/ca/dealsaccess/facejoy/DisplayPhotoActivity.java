@@ -293,7 +293,7 @@ public class DisplayPhotoActivity extends ActionBarActivity {
 										.setPositiveButton("创建人物", new DialogInterface.OnClickListener() {
 											public void onClick(DialogInterface dialog, int which) {
 												dialog.dismiss();
-												String checkedListStr = StringUtils.listToString(facecheckedList);
+												String checkedListStr = StringUtils.toStringList(facecheckedList);
 												Intent intent = new Intent(DisplayPhotoActivity.this, CreatePersonActivity.class);
 												intent.putExtra(AppConstants.EXTRA_MESSAGE, "openAddPersonActivity");
 												intent.putExtra(AppConstants.FACE_CHECKED_LIST, checkedListStr);
@@ -303,7 +303,7 @@ public class DisplayPhotoActivity extends ActionBarActivity {
 										.setNegativeButton("添加到已有人物", new DialogInterface.OnClickListener() {
 											public void onClick(DialogInterface dialog, int which) {
 												dialog.dismiss();
-												String checkedListStr = StringUtils.listToString(facecheckedList);
+												String checkedListStr = StringUtils.toStringList(facecheckedList);
 												Intent intent = new Intent(DisplayPhotoActivity.this, UseExistPersonActivity.class);
 												intent.putExtra(AppConstants.EXTRA_MESSAGE, "openUseExistPersonActivity");
 												intent.putExtra(AppConstants.FACE_CHECKED_LIST, checkedListStr);
