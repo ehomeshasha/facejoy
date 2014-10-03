@@ -1,4 +1,4 @@
-package ca.dealsaccess.facejoy;
+package ca.dealsaccess.deprecated;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -7,9 +7,9 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import ca.dealsaccess.facejoy.CreatePersonActivity;
 import ca.dealsaccess.facejoy.common.AppConstants;
-import ca.dealsaccess.facejoy.image.ImageManager;
-import ca.dealsaccess.util.ImageUtils;
+import ca.dealsaccess.util.FacecppUtils;
 import ca.dealsaccess.util.StringUtils;
 
 import com.example.facejoy.R;
@@ -21,7 +21,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -29,19 +28,13 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.BitmapFactory.Options;
-import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.provider.MediaStore.Images.ImageColumns;
-import android.provider.MediaStore.Images.Thumbnails;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -61,6 +54,7 @@ public class DisplayPhotoActivity extends ActionBarActivity {
 	
 	//private AlertDialog.Builder builder = null;
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
@@ -371,6 +365,7 @@ public class DisplayPhotoActivity extends ActionBarActivity {
 	
 	
 	
+	@SuppressWarnings("unused")
 	private void onPhotoLoadFinish() {
 		buttonDetect.setVisibility(View.VISIBLE);
 	
@@ -409,7 +404,7 @@ public class DisplayPhotoActivity extends ActionBarActivity {
     		new Thread(new Runnable() {
 				
 				public void run() {
-					HttpRequests httpRequests = new HttpRequests("3807aeb4a0b911495fdf0c946d006251", "DQOkhWeHweMMItMjaIGwqG0Nns8JNj1E", true, false);
+					HttpRequests httpRequests = FacecppUtils.getRequests();
 		    		//Log.v(TAG, "image size : " + img.getWidth() + " " + img.getHeight());
 		    		
 		    		ByteArrayOutputStream stream = new ByteArrayOutputStream();

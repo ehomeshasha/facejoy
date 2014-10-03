@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import ca.dealsaccess.facejoy.common.AppConstants;
 import ca.dealsaccess.util.DeviceUtils;
+import ca.dealsaccess.util.FacecppUtils;
 
 import com.example.facejoy.R;
 import com.facepp.error.FaceppParseException;
@@ -22,7 +23,6 @@ import android.widget.Toast;
 
 public class CreatePersonActivity extends ActionBarActivity {
 
-	// private TextView titleView;
 	private EditText faceid_input;
 	private Button createPersonBtn;
 	private String[] facecheckedList;
@@ -30,22 +30,18 @@ public class CreatePersonActivity extends ActionBarActivity {
 	private Intent intent;
 	private HttpRequests httpRequests;
 	private JSONObject rst;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.create_person);
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		// If your minSdkVersion is 11 or higher, instead use:
-		// getActionBar().setDisplayHomeAsUpEnabled(true);
 
 		intent = getIntent();
-		String title = intent.getStringExtra(AppConstants.EXTRA_MESSAGE);
 		String checkedListStr = intent.getStringExtra(AppConstants.FACE_CHECKED_LIST);
 		facecheckedList = checkedListStr.split(",");
-
-		Toast.makeText(this, "Selected Item: " + title + ", checkedListStr=" + checkedListStr,
-				Toast.LENGTH_SHORT).show();
+		
 		faceid_input = (EditText) this.findViewById(R.id.faceid_input);
 		faceid_input.setText(checkedListStr);
 
@@ -55,8 +51,7 @@ public class CreatePersonActivity extends ActionBarActivity {
 
 				final String personName = ((EditText) CreatePersonActivity.this.findViewById(R.id.username_input))
 						.getText().toString();
-				httpRequests = new HttpRequests("3807aeb4a0b911495fdf0c946d006251",
-						"DQOkhWeHweMMItMjaIGwqG0Nns8JNj1E", true, false);
+				httpRequests = FacecppUtils.getRequests();
 				groupName = DeviceUtils.getDeviceId(CreatePersonActivity.this);
 				
 				
@@ -76,15 +71,11 @@ public class CreatePersonActivity extends ActionBarActivity {
 								@Override
 								public void run() {
 									Toast.makeText(CreatePersonActivity.this, "您已成功创建人物", Toast.LENGTH_SHORT).show();
-									//CreatePersonActivity.this.setResult(FaceMainActivity.CREATE_PERSON, intent);
-									//CreatePersonActivity.this.finish();
-									//打开人物详情页
-									
-									PersonListActivity.openPersonDetailActivity(CreatePersonActivity.this, personId, personName);
+									//打开该人物的脸谱页面
+									PersonListActivity.openFaceListActivity(CreatePersonActivity.this, personId, personName);
 								}
 							
 							});
-							
 						} catch (final FaceppParseException e) {
 							CreatePersonActivity.this.runOnUiThread(new Runnable() {
 								@Override
@@ -92,7 +83,6 @@ public class CreatePersonActivity extends ActionBarActivity {
 									Toast.makeText(CreatePersonActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
 								}
 							});
-							
 							return;
 						} catch (final JSONException e) {
 							CreatePersonActivity.this.runOnUiThread(new Runnable() {
@@ -101,6 +91,7 @@ public class CreatePersonActivity extends ActionBarActivity {
 									Toast.makeText(CreatePersonActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
 								}
 							});
+							return;
 						}
 						CreatePersonActivity.this.runOnUiThread(new Runnable() {
 							public void run() {

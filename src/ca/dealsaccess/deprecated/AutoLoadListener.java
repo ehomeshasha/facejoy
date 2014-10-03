@@ -1,4 +1,4 @@
-package ca.dealsaccess.facejoy;
+package ca.dealsaccess.deprecated;
 
 import android.view.View;
 import android.widget.AbsListView;

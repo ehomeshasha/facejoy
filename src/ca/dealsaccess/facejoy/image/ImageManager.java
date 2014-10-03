@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
@@ -21,15 +22,14 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v4.util.LruCache;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 /**
  * 图片加载类
  * 
  * @author 月月鸟
  */
+@SuppressLint("HandlerLeak")
 public class ImageManager {
 
 	private static ImageManager imageManager;
@@ -297,6 +297,7 @@ public class ImageManager {
 			super(looper);
 		}
 
+		@SuppressLint("DefaultLocale")
 		@Override
 		public void handleMessage(Message msg) {
 			if (msg == null)
@@ -474,6 +475,7 @@ public class ImageManager {
 	 * 添加图片显示渐现动画
 	 * 
 	 */
+	@SuppressWarnings("deprecation")
 	private void setImageBitmap(ImageView imageView, Bitmap bitmap,
 			boolean isTran) {
 		if (isTran) {

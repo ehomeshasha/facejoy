@@ -12,6 +12,7 @@ import ca.dealsaccess.facejoy.common.AppConstants;
 import ca.dealsaccess.util.CollectionUtils;
 import ca.dealsaccess.util.DeviceUtils;
 import ca.dealsaccess.util.DialogUtils;
+import ca.dealsaccess.util.FacecppUtils;
 
 import com.example.facejoy.R;
 import com.facepp.error.FaceppParseException;
@@ -60,22 +61,20 @@ public class PersonListActivity extends ActionBarActivity {
 		processDialog = new ProgressDialog(this);
 		
 		Intent intent = getIntent();
-		String title = intent.getStringExtra(AppConstants.EXTRA_MESSAGE);
+		//获取选择的face id列表，如果不为空则代表用户进行人脸检测后选择了添加到已有人物的操作，点击人物应该提示用户是否添加到该人物，
+		//否则点击人物则进入该人物的脸谱页面
 		checkedListStr = intent.getStringExtra(AppConstants.FACE_CHECKED_LIST);
-		Toast.makeText(this, "Selected Item: " + title + ", checkedListStr=" + checkedListStr,
-				Toast.LENGTH_SHORT).show();
 		if (checkedListStr != null) {
 			facecheckedList = checkedListStr.split(",");
 		}
-
 		initData();
 	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu items for use in the action bar
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.delete_menu, menu);
+		inflater.inflate(R.menu.personlist_delete_menu, menu);
+		//添加返回和删除按钮以实现人物的删除功能
 		gobackItem = menu.findItem(R.id.goback);
 		deleteItem = menu.findItem(R.id.delete);
 		return super.onCreateOptionsMenu(menu);
@@ -94,13 +93,13 @@ public class PersonListActivity extends ActionBarActivity {
 		return super.onOptionsItemSelected(item);
 		}
 	}
-
+	//点击返回按钮或删除操作成功完成后触发goBack操作，回到删除之前的页面
 	private void goBack() {
 		deleteItem.setTitle("删除");
 		gobackItem.setVisible(false);
 		initListView();
 	}
-
+	//删除人物操作
 	private void personDelete(MenuItem item) {
 		if(item.getTitle().equals("删除")) {
 			if(personListItem.size() == 0) {
@@ -171,13 +170,11 @@ public class PersonListActivity extends ActionBarActivity {
 			builder.create().show();
 		}
 	}
-
-
-
+	
+	//初始化人物列表
 	private void initData() {
 
-		httpRequests = new HttpRequests("3807aeb4a0b911495fdf0c946d006251",
-				"DQOkhWeHweMMItMjaIGwqG0Nns8JNj1E", true, false);
+		httpRequests = FacecppUtils.getRequests();
 		groupName = DeviceUtils.getDeviceId(PersonListActivity.this);
 
 		new Thread(new Runnable() {
@@ -192,7 +189,6 @@ public class PersonListActivity extends ActionBarActivity {
 					for (int i = 0; i < personList.length(); i++) {
 						personListItem.add(personList.getJSONObject(i).getString("person_name"));
 					}
-
 				} catch (final FaceppParseException e) {
 					PersonListActivity.this.runOnUiThread(new Runnable() {
 						@Override
@@ -220,16 +216,17 @@ public class PersonListActivity extends ActionBarActivity {
 		}).start();
 	}
 
-	public static void openPersonDetailActivity(Activity activity, String personId,
+	//打开人物详情，即脸谱列表页面
+	public static void openFaceListActivity(Activity activity, String personId,
 			String personName) {
 		Intent intent = new Intent(activity, FaceListActivity.class);
-		intent.putExtra(AppConstants.EXTRA_MESSAGE, "openPersonDetailActivity");
 		intent.putExtra(AppConstants.PERSON_ID, personId);
 		intent.putExtra(AppConstants.PERSON_NAME, personName);
 		activity.startActivity(intent);
 	}
 	
-	public void initListView() {
+	//初始化人物列表listView
+	private void initListView() {
 		listView = new ListView(PersonListActivity.this);
 		listView.setAdapter(new ArrayAdapter<String>(PersonListActivity.this,
 				android.R.layout.simple_expandable_list_item_1, personListItem));
@@ -250,6 +247,7 @@ public class PersonListActivity extends ActionBarActivity {
 							Toast.LENGTH_SHORT).show();
 					return;
 				}
+				//如果选择的face列表不为空，则进行给指定人物添加face的操作，否则进入该人物的脸谱页面
 				if (checkedListStr != null) {
 					// 添加face到这个person
 					AlertDialog.Builder builder = new AlertDialog.Builder(
@@ -271,8 +269,8 @@ public class PersonListActivity extends ActionBarActivity {
 												public void run() {
 													Toast.makeText(PersonListActivity.this, "您已成功添加人脸",
 															Toast.LENGTH_SHORT).show();
-													//打开人物的详情页
-													openPersonDetailActivity(PersonListActivity.this, personId, personListItem.get(position));
+													//打开该人物的脸谱页面
+													openFaceListActivity(PersonListActivity.this, personId, personListItem.get(position));
 													PersonListActivity.this.getIntent().removeExtra(AppConstants.FACE_CHECKED_LIST);
 													checkedListStr = null;
 												}
@@ -334,15 +332,15 @@ public class PersonListActivity extends ActionBarActivity {
 					builder.create().show();
 
 				} else {
-					//打开人物的详情页
-					openPersonDetailActivity(PersonListActivity.this, personId, personListItem.get(position));
+					//打开该人物的脸谱页面
+					openFaceListActivity(PersonListActivity.this, personId, personListItem.get(position));
 				}
 
 			}
 
 		});
 	}
-	
+	//初始化人物列表的checkBox版本页面，可以对人物进行删除
 	private void initListViewForDelete() {
 		listView = new ListView(PersonListActivity.this);
 		listView.setAdapter(new ArrayAdapter<String>(PersonListActivity.this,

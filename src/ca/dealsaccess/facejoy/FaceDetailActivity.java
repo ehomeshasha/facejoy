@@ -4,6 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import ca.dealsaccess.facejoy.common.AppConstants;
+import ca.dealsaccess.util.FacecppUtils;
 
 import com.example.facejoy.R;
 import com.facepp.error.FaceppParseException;
@@ -39,33 +40,24 @@ public class FaceDetailActivity extends ActionBarActivity {
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.face_detail);
-
 	    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-	    // If your minSdkVersion is 11 or higher, instead use:
-	    // getActionBar().setDisplayHomeAsUpEnabled(true);
 	    
 	    // 获取屏幕大小
  		DisplayMetrics dm = new DisplayMetrics();
- 		// 取得窗口属性
  		getWindowManager().getDefaultDisplay().getMetrics(dm);
- 		// 窗口的宽度
  		screenWidth = dm.widthPixels;
- 		// 窗口高度
  		screenHeight = dm.heightPixels;
 	    
-	    
 	    Intent intent = getIntent();
-	    String title = intent.getStringExtra(AppConstants.EXTRA_MESSAGE);
+	    //获取face id以及face图像的路径
 	    faceId = intent.getStringExtra(AppConstants.FACE_ID);
 	    imgPath = intent.getStringExtra(AppConstants.FACE_IMG_PATH);
-	    Toast.makeText(this, "Selected Item: " + title+", faceId="+faceId+", imgPath="+imgPath, Toast.LENGTH_SHORT).show();
-	    
-	    
-		// just read size
+
+	    //设置ImageView的bitmap
+	    // just read size
 		Options options = new Options();
 		options.inJustDecodeBounds = true;
 		img = BitmapFactory.decodeFile(imgPath, options);
-
 		// scale size to read
 		options.inSampleSize = Math.max(1, (int) Math.ceil(Math.max((double) options.outWidth
 				/ screenWidth, (double) options.outHeight / screenHeight)));
@@ -79,10 +71,10 @@ public class FaceDetailActivity extends ActionBarActivity {
 		raceTextView = ((TextView) FaceDetailActivity.this.findViewById(R.id.race_text));
 		smilingTextView = ((TextView) FaceDetailActivity.this.findViewById(R.id.smiling_text));
 		
+		//读取脸谱信息
 		new Thread(new Runnable() {
 			public void run() {
-				httpRequests = new HttpRequests("3807aeb4a0b911495fdf0c946d006251",
-						"DQOkhWeHweMMItMjaIGwqG0Nns8JNj1E", true, false);
+				httpRequests = FacecppUtils.getRequests();
 				try {
 					rst = httpRequests.infoGetFace(new PostParameters().setFaceId(faceId));
 					JSONObject attribute = rst.getJSONArray("face_info").getJSONObject(0).getJSONObject("attribute");
@@ -103,11 +95,6 @@ public class FaceDetailActivity extends ActionBarActivity {
 							smilingTextView.setText("微笑度: "+smiling);
 						}
 					});
-					
-					
-					
-					
-					
 				} catch (final FaceppParseException e) {
 					FaceDetailActivity.this.runOnUiThread(new Runnable() {
 						@Override
@@ -125,10 +112,9 @@ public class FaceDetailActivity extends ActionBarActivity {
 									.show();
 						}
 					});
+					return;
 				}
 			}
 		}).start();
-	    
 	}
-
 }

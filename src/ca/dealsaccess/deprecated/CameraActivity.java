@@ -1,4 +1,4 @@
-package ca.dealsaccess.facejoy;
+package ca.dealsaccess.deprecated;
 
 import java.io.IOException;
 
@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-//import android.view.SurfaceHolder.Callback;
 
 public class CameraActivity extends Activity implements SurfaceHolder.Callback {
 
@@ -19,6 +18,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
 	private Camera camera;
 	
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

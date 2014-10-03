@@ -1,51 +1,23 @@
-package ca.dealsaccess.facejoy;
+package ca.dealsaccess.deprecated;
 
-import java.io.ByteArrayOutputStream;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import ca.dealsaccess.example.GridViewActivity;
 import ca.dealsaccess.facejoy.common.AppConstants;
 
 import com.example.facejoy.R;
-import com.facepp.error.FaceppParseException;
-import com.facepp.http.HttpRequests;
-import com.facepp.http.PostParameters;
 
-import android.app.Dialog;
-import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.BitmapFactory.Options;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.provider.MediaStore.Images.ImageColumns;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.ResourceCursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter.ViewBinder;
 import android.support.v7.app.ActionBarActivity;
@@ -66,9 +38,9 @@ import android.support.v7.app.ActionBarActivity;
  */
 public class MyDevicePhotoActivity extends ActionBarActivity implements LoaderCallbacks<Cursor>{
     private Bitmap bitmap = null;
-    private byte[] mContent = null;
+//    private byte[] mContent = null;
     
-    private ListView listView = null;
+//    private ListView listView = null;
     
     private GridView gridView = null;
     
@@ -79,7 +51,7 @@ public class MyDevicePhotoActivity extends ActionBarActivity implements LoaderCa
     
     //private TextView textView = null;
     
-    private Bitmap img = null;
+//    private Bitmap img = null;
     
     static final String CLICK_ID = "CLICK_ID";
     
@@ -302,7 +274,8 @@ public class MyDevicePhotoActivity extends ActionBarActivity implements LoaderCa
     }
     
     // 将图片的位置绑定到视图
-    private class ImageLocationBinder implements ViewBinder{ 
+    @SuppressWarnings("unused")
+	private class ImageLocationBinder implements ViewBinder{ 
         @Override
         public boolean setViewValue(View view, Cursor cursor, int arg2) {
             // TODO Auto-generated method stub

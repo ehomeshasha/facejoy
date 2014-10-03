@@ -8,8 +8,11 @@ import org.json.JSONObject;
 
 import ca.dealsaccess.facejoy.common.AppConstants;
 import ca.dealsaccess.facejoy.image.ImageAdapter;
+import ca.dealsaccess.facejoy.sqlite.Person;
+import ca.dealsaccess.facejoy.sqlite.PersonDBManager;
 import ca.dealsaccess.util.CollectionUtils;
 import ca.dealsaccess.util.DialogUtils;
+import ca.dealsaccess.util.FacecppUtils;
 import ca.dealsaccess.util.GsonUtils;
 
 import com.example.facejoy.R;
@@ -49,6 +52,7 @@ public class FaceListActivity extends ActionBarActivity {
 	private ArrayList<String> faceIdDel = new ArrayList<String>();
 	private MenuItem gobackItem;
 	private MenuItem deleteItem;
+	private MenuItem trainItem;
 	private ProgressDialog processDialog;
 	
 	@Override
@@ -60,20 +64,15 @@ public class FaceListActivity extends ActionBarActivity {
 		processDialog = new ProgressDialog(this);
 
 		Intent intent = getIntent();
-		String title = intent.getStringExtra(AppConstants.EXTRA_MESSAGE);
+		//获取人物ID和昵称
 		personId = intent.getStringExtra(AppConstants.PERSON_ID);
 		personName = intent.getStringExtra(AppConstants.PERSON_NAME);
-		
 		getSupportActionBar().setTitle(personName+"的脸谱");
-		
-		Toast.makeText(this,
-				"Selected Item: " + title + ", personId=" + personId + ", personName=" + personName,
-				Toast.LENGTH_SHORT).show();
-		
+
+		//获取属于该脸谱的face
 		new Thread(new Runnable() {
 			public void run() {
-				httpRequests = new HttpRequests("3807aeb4a0b911495fdf0c946d006251",
-						"DQOkhWeHweMMItMjaIGwqG0Nns8JNj1E", true, false);
+				httpRequests = FacecppUtils.getRequests();
 				try {
 					rst = httpRequests.personGetInfo(new PostParameters().setPersonId(personId));
 					JSONArray faces = rst.getJSONArray("face");
@@ -81,6 +80,7 @@ public class FaceListActivity extends ActionBarActivity {
 						String faceId = faces.getJSONObject(i).getString("face_id");
 						faceIdList.add(faceId);
 					}
+					//获取face图像的路径
 					JSONObject rst2 = httpRequests.infoGetFace(new PostParameters().setFaceId(faceIdList));
 					JSONArray faceInfoList = rst2.getJSONArray("face_info");
 					for (int j = 0; j < faceInfoList.length(); j++) {
@@ -116,7 +116,7 @@ public class FaceListActivity extends ActionBarActivity {
 		}).start();
 
 	}
-	
+	//初始化脸谱gridview
 	private void initGridView() {
 		faceIdDel.clear();
 		positionDel.clear();
@@ -133,7 +133,7 @@ public class FaceListActivity extends ActionBarActivity {
             }
 		});
 	}
-	
+	//设置复选框的显示/隐藏
 	private void setCheckBoxVisiblity(int visibility) {
 		for(int i=0;i<gridView.getChildCount();i++) {
 			CheckBox checkBox = (CheckBox) gridView.getChildAt(i).findViewById(R.id.image_body_checkbox);
@@ -155,15 +155,14 @@ public class FaceListActivity extends ActionBarActivity {
 		}
 	}
 
-	
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu items for use in the action bar
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.delete_menu, menu);
+		inflater.inflate(R.menu.facelist_delete_menu, menu);
+		//添加返回和删除按钮以实现脸谱的删除功能
 		gobackItem = menu.findItem(R.id.goback);
 		deleteItem = menu.findItem(R.id.delete);
+		trainItem = menu.findItem(R.id.train);
 		return super.onCreateOptionsMenu(menu);
 	}
 	
@@ -176,22 +175,87 @@ public class FaceListActivity extends ActionBarActivity {
 		case R.id.goback:
 			goBack();
 			return true;
+		case R.id.train:
+			trainPerson();
+			return true;
 		default:
 		return super.onOptionsItemSelected(item);
 		}
 	}
 	
+	//对该人物进行训练
+	private void trainPerson() {
+		//获取属于该脸谱的face
+		new Thread(new Runnable() {
+			public void run() {
+				httpRequests = FacecppUtils.getRequests();
+				try {
+					rst = httpRequests.trainVerify(new PostParameters().setPersonId(personId));
+					String sessionId = rst.getString("session_id");
+					PersonDBManager manager = new PersonDBManager(FaceListActivity.this);
+					Person person = new Person(personId, personName, AppConstants.TRAIN_STATE.INQUEUE, (int)System.currentTimeMillis()/1000, 
+							0, 0, sessionId);
+					long lastInsertId = manager.insert(person);
+					if(lastInsertId == -1) {
+						FaceListActivity.this.runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								Toast.makeText(FaceListActivity.this, "插入数据失败", Toast.LENGTH_SHORT)
+										.show();
+							}
+						});
+						return;
+					}
+					while(true) {
+						try {
+							Thread.sleep(10000);
+							JSONObject rst2 = httpRequests.infoGetSession(new PostParameters().setSessionId(sessionId));
+							String status = rst2.getString("status");
+							if(status.equals(AppConstants.TRAIN_STATE_STRING.INQUEUE) 
+								|| status.equals(AppConstants.TRAIN_STATE_STRING.FAILED)) {
+								continue;
+							} else if(status.equals(AppConstants.TRAIN_STATE_STRING.SUCC)) {
+								person.createTime = rst2.getInt("create_time");
+								person.finishTime = rst2.getInt("finish_time");
+								person.isTrain = AppConstants.TRAIN_STATE.SUCC;
+								int affectRows = manager.update(person, lastInsertId);
+								if(affectRows != 1) continue;
+								break;
+							}
+						} catch (Exception e) {continue;}
+					}
+				} catch (final FaceppParseException e) {
+					FaceListActivity.this.runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							Toast.makeText(FaceListActivity.this, e.getMessage(), Toast.LENGTH_SHORT)
+									.show();
+						}
+					});
+					return;
+				} catch (final JSONException e) {
+					FaceListActivity.this.runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							Toast.makeText(FaceListActivity.this, e.getMessage(), Toast.LENGTH_SHORT)
+									.show();
+						}
+					});
+					return;
+				}
+			}
+		}).start();
+		
+	}
+	//点击返回按钮或删除操作成功完成后触发goBack操作，回到删除之前的页面
 	private void goBack() {
 		deleteItem.setTitle("删除");
 		gobackItem.setVisible(false);
+		trainItem.setVisible(true);
 		initGridView();
 		setCheckBoxVisiblity(View.INVISIBLE);
 	}
-
-	
-
-
-
+	//删除人脸操作
 	private void faceDelete(MenuItem item) {
 		if(item.getTitle().equals("删除")) {
 			if(faceImgPathList.size() == 0) {
@@ -199,6 +263,7 @@ public class FaceListActivity extends ActionBarActivity {
 			}
 			item.setTitle("删除选中的人脸");
 			gobackItem.setVisible(true);
+			trainItem.setVisible(false);
 			setCheckBoxVisiblity(View.VISIBLE);
 		} else if(item.getTitle().equals("删除选中的人脸")) {
 			if(faceIdDel.size() == 0) {
@@ -242,6 +307,7 @@ public class FaceListActivity extends ActionBarActivity {
 											Toast.makeText(FaceListActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
 										}
 									});
+									return;
 								} catch (final JSONException e) {
 									FaceListActivity.this.runOnUiThread(new Runnable() {
 										@Override
@@ -249,6 +315,7 @@ public class FaceListActivity extends ActionBarActivity {
 											Toast.makeText(FaceListActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
 										}
 									});
+									return;
 								}
 							}
 						}).start();

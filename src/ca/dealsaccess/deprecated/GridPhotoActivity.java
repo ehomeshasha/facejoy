@@ -1,4 +1,4 @@
-package ca.dealsaccess.facejoy;
+package ca.dealsaccess.deprecated;
 
 import java.io.File;
 import java.util.ArrayList;

@@ -1,15 +1,16 @@
 package ca.dealsaccess.facejoy;
 
 import java.io.ByteArrayOutputStream;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import ca.dealsaccess.deprecated.DisplayMessageActivity;
 import ca.dealsaccess.facejoy.common.AppConstants;
 import ca.dealsaccess.util.DialogUtils;
+import ca.dealsaccess.util.FacecppUtils;
 import ca.dealsaccess.util.StringUtils;
 
 import com.example.facejoy.R;
@@ -197,19 +198,13 @@ public class FaceMainActivity extends ActionBarActivity {
 												public void onClick(DialogInterface dialog, int which) {
 													//如果没有选择face,那么进行提示用户进行选择
 													if(facecheckedList.size() == 0) {
-														try {
-															Field field = dialog.getClass().getSuperclass().getDeclaredField("mShowing");
-															field.setAccessible(true);
-															field.set(dialog, false);//禁止对话框关闭
-														} catch (Exception e) {e.printStackTrace();}
+														DialogUtils.DialogClosePermission(dialog, false);
 														Toast.makeText(FaceMainActivity.this, "请先选择人脸",	Toast.LENGTH_SHORT).show();
 													} else {
 														String checkedListStr = StringUtils
 																.toStringList(facecheckedList);
 														Intent intent = new Intent(FaceMainActivity.this,
 																CreatePersonActivity.class);
-														intent.putExtra(AppConstants.EXTRA_MESSAGE,
-																"openCreatePersonActivity");
 														intent.putExtra(AppConstants.FACE_CHECKED_LIST,
 																checkedListStr);
 														startActivityForResult(intent, CREATE_PERSON);
@@ -222,19 +217,13 @@ public class FaceMainActivity extends ActionBarActivity {
 														public void onClick(DialogInterface dialog, int which) {
 															//如果没有选择face,那么进行提示用户进行选择
 															if(facecheckedList.size() == 0) {
-																try {
-																	Field field = dialog.getClass().getSuperclass().getDeclaredField("mShowing");
-																	field.setAccessible(true);
-																	field.set(dialog, false);//禁止对话框关闭
-																} catch (Exception e) {e.printStackTrace();}
+																DialogUtils.DialogClosePermission(dialog, false);
 																Toast.makeText(FaceMainActivity.this, "请先选择人脸",	Toast.LENGTH_SHORT).show();
 															} else {
 																String checkedListStr = StringUtils
 																		.toStringList(facecheckedList);
 																Intent intent = new Intent(FaceMainActivity.this,
 																		PersonListActivity.class);
-																intent.putExtra(AppConstants.EXTRA_MESSAGE,
-																		"addFace");
 																intent.putExtra(AppConstants.FACE_CHECKED_LIST,
 																		checkedListStr);
 																startActivityForResult(intent, ADD_PERSON);
@@ -243,11 +232,7 @@ public class FaceMainActivity extends ActionBarActivity {
 													})
 											.setOnCancelListener(new DialogInterface.OnCancelListener() {
 												public void onCancel(DialogInterface dialog) {
-													try {
-														Field field = dialog.getClass().getSuperclass().getDeclaredField("mShowing");
-														field.setAccessible(true);
-														field.set(dialog, true);//允许对话框关闭
-													} catch (Exception e) {e.printStackTrace();}
+													DialogUtils.DialogClosePermission(dialog, true);
 													dialog.dismiss();
 												}
 											});
@@ -307,41 +292,20 @@ public class FaceMainActivity extends ActionBarActivity {
 	//打开人物列表
 	private void openPerson() {
 		Intent intent = new Intent(this, PersonListActivity.class);
-		intent.putExtra(AppConstants.EXTRA_MESSAGE, "openPersonListActivity");
 		startActivityForResult(intent, PERSON_LIST);
 		
 	}
-
 	//打开摄像头
 	private void openCamera() {
-//		 Intent intent = new Intent(this, CameraActivity.class);
-//		 intent.putExtra(AppConstants.EXTRA_MESSAGE, "openCameraActivity");
-//		 startActivity(intent);
-//		 File file = new
-//		 File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-//		 "test_"+System.currentTimeMillis()+".jpg");
-//		 outputFileUri = Uri.fromFile(file);
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		intent.putExtra(AppConstants.EXTRA_MESSAGE, "openCameraActivity");
-		// intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
 		startActivityForResult(intent, TAKE_PICTURE);
 	}
 	//打开相册
 	private void openAlbum() {
-		// open album page
-		// get a picture form your phone
-		// Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-		// photoPickerIntent.setType("image/*");
-		// startActivityForResult(photoPickerIntent, PICTURE_CHOOSE);
-		// Intent intent = new Intent(this, GridPhotoActivity.class);
-		// intent.putExtra(AppConstants.EXTRA_MESSAGE, "openAlbumActivity");
-		// startActivity(intent);
 		Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
 		photoPickerIntent.setType("image/*");
 		startActivityForResult(photoPickerIntent, PICTURE_CHOOSE);
-
 	}
-
 	//活动结束回调函数
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -349,20 +313,13 @@ public class FaceMainActivity extends ActionBarActivity {
 
 		Toast.makeText(FaceMainActivity.this, "requestCode is "+requestCode, Toast.LENGTH_SHORT)
 		.show();
-		// the image picker callback
 		if (requestCode == PICTURE_CHOOSE || requestCode == TAKE_PICTURE) {
 			if (intent != null) {
-				// The Android api ~~~
-				// Log.d(TAG, "idButSelPic Photopicker: " +
-				// intent.getDataString());
 				Cursor cursor = getContentResolver().query(intent.getData(), null, null, null, null);
 				cursor.moveToFirst();
 				int idx = cursor.getColumnIndex(ImageColumns.DATA);
 				fileSrc = cursor.getString(idx);
-				// Log.d(TAG, "Picture:" + fileSrc);
-
-				// just read size
-				Options options = new Options();
+					Options options = new Options();
 				options.inJustDecodeBounds = true;
 				img = BitmapFactory.decodeFile(fileSrc, options);
 
@@ -381,27 +338,12 @@ public class FaceMainActivity extends ActionBarActivity {
 				Log.d(TAG, "idButSelPic Photopicker canceled");
 			}
 		} else if (requestCode == CREATE_PERSON) {
-//			Intent intent2 = new Intent(FaceMainActivity.this,
-//					PersonListActivity.class);
-//			intent2.putExtra(AppConstants.EXTRA_MESSAGE,
-//					"list");
-//			startActivityForResult(intent2, ADD_PERSON);
 		} else if (requestCode == ADD_PERSON) {
-
 		}
 	}
-
-	public void openSearch() {
-		// open search page
-		Intent intent = new Intent(this, MyDevicePhotoActivity.class);
-		intent.putExtra(AppConstants.EXTRA_MESSAGE, "openSearchActivity");
-		startActivity(intent);
-	}
-
+	//打开设置页面
 	public void openSettings() {
-		// open setting page
 		Intent intent = new Intent(this, DisplayMessageActivity.class);
-		intent.putExtra(AppConstants.EXTRA_MESSAGE, "openSettingsActivity");
 		startActivity(intent);
 	}
 
@@ -411,15 +353,13 @@ public class FaceMainActivity extends ActionBarActivity {
 		public void setDetectCallback(DetectCallback detectCallback) {
 			callback = detectCallback;
 		}
-
 		//检测人脸程序
 		public void detect(final Bitmap image) {
 
 			new Thread(new Runnable() {
 
 				public void run() {
-					HttpRequests httpRequests = new HttpRequests("3807aeb4a0b911495fdf0c946d006251",
-							"DQOkhWeHweMMItMjaIGwqG0Nns8JNj1E", true, false);
+					HttpRequests httpRequests = FacecppUtils.getRequests();
 
 					ByteArrayOutputStream stream = new ByteArrayOutputStream();
 					float scale = Math.min(1, Math.min(600f / img.getWidth(), 600f / img.getHeight()));

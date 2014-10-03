@@ -10,7 +10,7 @@ public class DeviceUtils {
 	
 	public static String getDeviceId(Activity activity) {
 		final TelephonyManager tm = (TelephonyManager) activity.getBaseContext().getSystemService(Context.TELEPHONY_SERVICE);
-		final String tmDevice, tmSerial, tmPhone, androidId;
+		final String tmDevice, tmSerial, androidId;
 		tmDevice = "" + tm.getDeviceId();
 		tmSerial = "" + tm.getSimSerialNumber();
 		androidId = "" + android.provider.Settings.Secure.getString(activity.getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
