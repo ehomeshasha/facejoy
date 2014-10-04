@@ -8,8 +8,8 @@ import org.json.JSONObject;
 
 import ca.dealsaccess.facejoy.common.AppConstants;
 import ca.dealsaccess.facejoy.image.ImageAdapter;
-import ca.dealsaccess.facejoy.sqlite.Person;
-import ca.dealsaccess.facejoy.sqlite.PersonDBManager;
+import ca.dealsaccess.facejoy.sqlite.PersonTrainVerify;
+import ca.dealsaccess.facejoy.sqlite.PersonTrainVerifyDBManager;
 import ca.dealsaccess.util.CollectionUtils;
 import ca.dealsaccess.util.DialogUtils;
 import ca.dealsaccess.util.FacecppUtils;
@@ -192,9 +192,9 @@ public class FaceListActivity extends ActionBarActivity {
 				try {
 					rst = httpRequests.trainVerify(new PostParameters().setPersonId(personId));
 					String sessionId = rst.getString("session_id");
-					PersonDBManager manager = new PersonDBManager(FaceListActivity.this);
-					Person person = new Person(personId, personName, AppConstants.TRAIN_STATE.INQUEUE, (int)System.currentTimeMillis()/1000, 
-							0, 0, sessionId);
+					PersonTrainVerifyDBManager manager = new PersonTrainVerifyDBManager(FaceListActivity.this);
+					PersonTrainVerify person = new PersonTrainVerify(personId, personName, AppConstants.TRAIN_STATE.INQUEUE,
+							(int)(System.currentTimeMillis()/1000), sessionId);
 					long lastInsertId = manager.insert(person);
 					if(lastInsertId == -1) {
 						FaceListActivity.this.runOnUiThread(new Runnable() {
@@ -211,13 +211,15 @@ public class FaceListActivity extends ActionBarActivity {
 							Thread.sleep(10000);
 							JSONObject rst2 = httpRequests.infoGetSession(new PostParameters().setSessionId(sessionId));
 							String status = rst2.getString("status");
+							JSONObject result = rst2.getJSONObject("result");
 							if(status.equals(AppConstants.TRAIN_STATE_STRING.INQUEUE) 
 								|| status.equals(AppConstants.TRAIN_STATE_STRING.FAILED)) {
 								continue;
 							} else if(status.equals(AppConstants.TRAIN_STATE_STRING.SUCC)) {
 								person.createTime = rst2.getInt("create_time");
 								person.finishTime = rst2.getInt("finish_time");
-								person.isTrain = AppConstants.TRAIN_STATE.SUCC;
+								person.status = AppConstants.TRAIN_STATE.SUCC;
+								person.result = result.toString();
 								int affectRows = manager.update(person, lastInsertId);
 								if(affectRows != 1) continue;
 								break;

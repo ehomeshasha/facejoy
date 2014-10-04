@@ -3,6 +3,9 @@ package ca.dealsaccess.util;
 import java.util.List;
 
 public class StringUtils {
+	
+	public static final String EMPTY = "";
+	
 	public static String toStringList(String[] sa) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < sa.length; ++i) {
