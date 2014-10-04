@@ -5,6 +5,7 @@
     
     <item android:id="@+id/train"
           android:title="@string/train"
+          android:visible="false"
           facejoy:showAsAction="ifRoom" />
     
 
