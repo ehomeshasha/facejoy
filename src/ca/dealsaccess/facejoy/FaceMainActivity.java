@@ -315,21 +315,30 @@ public class FaceMainActivity extends ActionBarActivity {
 		.show();
 		if (requestCode == PICTURE_CHOOSE || requestCode == TAKE_PICTURE) {
 			if (intent != null) {
-				Cursor cursor = getContentResolver().query(intent.getData(), null, null, null, null);
-				cursor.moveToFirst();
-				int idx = cursor.getColumnIndex(ImageColumns.DATA);
-				fileSrc = cursor.getString(idx);
-					Options options = new Options();
-				options.inJustDecodeBounds = true;
-				img = BitmapFactory.decodeFile(fileSrc, options);
-
-				// scale size to read
-				options.inSampleSize = Math.max(1, (int) Math.ceil(Math.max((double) options.outWidth
-						/ screenWidth, (double) options.outHeight / screenHeight)));
-				options.inJustDecodeBounds = false;
-				img = BitmapFactory.decodeFile(fileSrc, options);
-				// textView.setText("Clik Detect. ==>");
-
+				
+				try {
+					Cursor cursor = getContentResolver().query(intent.getData(), null, null, null, null);
+					cursor.moveToFirst();
+					int idx = cursor.getColumnIndex(ImageColumns.DATA);
+					fileSrc = cursor.getString(idx);
+						Options options = new Options();
+					options.inJustDecodeBounds = true;
+					img = BitmapFactory.decodeFile(fileSrc, options);
+	
+					// scale size to read
+					options.inSampleSize = Math.max(1, (int) Math.ceil(Math.max((double) options.outWidth
+							/ screenWidth, (double) options.outHeight / screenHeight)));
+					options.inJustDecodeBounds = false;
+					img = BitmapFactory.decodeFile(fileSrc, options);
+					// textView.setText("Clik Detect. ==>");
+				} catch (Exception e) {
+					if(requestCode == TAKE_PICTURE) {
+						if(resultCode == RESULT_OK) {
+							  Bundle extras = intent.getExtras();    
+				              img = (Bitmap) extras.get("data");
+						}
+					}
+				}
 				imageView.setImageBitmap(img);
 				imageView.setVisibility(View.VISIBLE);
 				detectButton.setVisibility(View.VISIBLE);
